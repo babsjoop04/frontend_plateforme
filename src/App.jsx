@@ -12,6 +12,8 @@ import './charts/ChartjsConfig';
 // Import pages
 import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+
 
 
 function App() {
@@ -28,7 +30,7 @@ function App() {
     <>
       <Routes>
         {/* <Route exact path="/" element={<Dashboard />} /> */}
-        <Route exact path="/" element={<LandingPage />} />
+        <Route exact path="/" element={<LoginPage />} />
 
       </Routes>
     </>

@@ -13,6 +13,8 @@ import './charts/ChartjsConfig';
 import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
+
 
 
 
@@ -30,7 +32,7 @@ function App() {
     <>
       <Routes>
         {/* <Route exact path="/" element={<Dashboard />} /> */}
-        <Route exact path="/" element={<LoginPage />} />
+        <Route exact path="/" element={<SignUpPage />} />
 
       </Routes>
     </>

@@ -1,7 +1,8 @@
+const withMT = require("@material-tailwind/react/utils/withMT");
 import plugin from "tailwindcss/plugin";
 import forms from '@tailwindcss/forms';
 
-export default {
+export default withMT({
   content: [
     './index.html',
     './src/**/*.{js,jsx,ts,tsx}',
@@ -137,4 +138,4 @@ export default {
       });
     }),
   ],
-};
+});

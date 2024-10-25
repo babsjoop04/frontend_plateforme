@@ -1,176 +1,81 @@
-
+import Logo from "@/images/logo.jpeg";
+import { LogIn } from "lucide-react";
 
 const LoginPage = () => {
   return (
     <>
-      <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Connectez vous
-          </h2>
-        </div>
-
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" action="#" method="POST">
-              <div>
-                <label
-                  for="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email address
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autocomplete="email"
-                    required
-                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Enter your email address"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  for="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autocomplete="current-password"
-                    required
-                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Enter your password"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember_me"
-                    name="remember_me"
-                    type="checkbox"
-                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                  />
+      <section className="">
+        {/* bg-gray-50 dark:bg-gray-900 */}
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          <div className="flex justify-center  my-2 ">
+            <img src={Logo} className="w-17 object-cover  h-12 rounded-full" />
+            <h5 className="font-semibold my-4 mx-2 md:order-0 text-white">
+              Sama pharmacovigile
+            </h5>
+          </div>
+          <div className="w-full  bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                Se connecter
+              </h1>
+              <form className="space-y-4 md:space-y-6" >
+                <div>
                   <label
-                    for="remember_me"
-                    className="ml-2 block text-sm text-gray-900"
+                    htmlFor="email"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Remember me
+                    Email
                   </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="name@company.com"
+                    required=""
+                  />
                 </div>
-
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 hover:text-blue-500"
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Forgot your password?
-                  </a>
+                    Mot de passe
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="••••••••"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required=""
+                  />
                 </div>
-              </div>
 
-              <div>
                 <button
                   type="submit"
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className=" flex m-auto items-center gap-1 text-white bg-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  Sign in
+                  <LogIn />
+                  <span>Se connecter</span>
                 </button>
-              </div>
-            </form>
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-gray-100 text-gray-500">Ou</span>
-                </div>
-              </div>
-
-              <div className="mt-6 ">
-                <div>
-                  
-                  <p className="mt-2 text-center text-sm text-gray-600 max-w">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:text-blue-500"
-                    >
-                      Creer un compte
-                    </a>
-                  </p>
-                </div>
                 
-              </div>
+                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                  Vous n'avez pas de compte ?{" "}
+                  <a
+                    href="#"
+                    className="font-medium text-primary-600 hover:underline decoration-blue-600 dark:text-primary-500"
+                  >
+                    Inscrivez vous
+                  </a>
+                </p>
+              </form>
             </div>
           </div>
         </div>
-      </div>
-
-
-{/* <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-    <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         
-        <div className="flex-1 bg-indigo-100 text-center hidden lg:flex ">
+      </section>
 
-        <img src={photo} className=" mx-auto"/>
-
-        
-            
-        </div>
-
-        <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-            <div>
-                <img src="https://storage.googleapis.com/devitary-image-host.appspot.com/15846435184459982716-LogoMakr_7POjrN.png"
-                    className="w-32 mx-auto" />
-            </div>
-            <div className="mt-12 flex flex-col items-center">
-                <h1 className="text-2xl xl:text-3xl font-extrabold">
-                    Sign up
-                </h1>
-                <div className="w-full flex-1 mt-8">
-                    
-                    <div className="mx-auto max-w-xs">
-                        <input
-                            className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                            type="email" placeholder="Email" />
-                        <input
-                            className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                            type="password" placeholder="Password" />
-                        <button
-                            className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
-                            <span className="ml-3">
-                                Sign Up
-                            </span>
-                        </button>
-                        
-                    </div>
-
-                    <div className="my-12 border-b text-center">
-                        <div
-                            className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                            Ou
-                        </div>
-
-
-                        
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div> */}
     </>
   );
 };

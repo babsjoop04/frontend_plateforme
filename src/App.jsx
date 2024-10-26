@@ -31,7 +31,7 @@ function App() {
   return (
     <>
       <Routes>
-        {/* <Route exact path="/" element={<Dashboard />} /> */}
+        {/* <Route exact path="/" element={<LoginPage />} /> */}
         <Route exact path="/" element={<SignUpPage />} />
 
       </Routes>

@@ -1,7 +1,13 @@
-import { Facebook, Github, Instagram,LogIn, LogOut, Twitter } from "lucide-react";
+import {
+  Facebook,
+  Github,
+  Instagram,
+  LogIn,
+  LogOut,
+  Twitter,
+} from "lucide-react";
 
 // import { button } from "@/components/ui/button";
-
 
 import homme_1 from "@/images/homme_1.jpg";
 import homme_2 from "@/images/homme_2.jpg";
@@ -14,8 +20,6 @@ import femme_3 from "@/images/femme_3.jpg";
 import imgMedicament from "@/images/securite-removebg-preview.png";
 import Logo from "@/images/logo.jpeg";
 
-
-
 import {
   ArrowBigRightDash,
   BookOpen,
@@ -24,90 +28,79 @@ import {
   Power,
 } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
-
-
-const TeamItem = ({ img_src, nom, poste}) => {
+const TeamItem = ({ img_src, nom, poste }) => {
   return (
     <div className="flex space-x-6">
-              <img
-                alt=""
-                className="flex-1 flex-shrink-0 object-cover h-56 mb-4 bg-center rounded-sm dark:bg-gray-500"
-                src={img_src}
-              />
-              <div className="flex flex-col">
-                <h4 className="text-xl font-semibold dark:text-gray-600">{nom}</h4>
-                <p className="text-sm dark:text-gray-600">{poste}</p>
-                <div className="flex mt-2 space-x-2">
-                  <ul className="mt-12 flex flex-wrap justify-center gap-2 ">
-                    <li>
-                      <Facebook />
-                    </li>
+      <img
+        alt=""
+        className="flex-1 flex-shrink-0 object-cover h-56 mb-4 bg-center rounded-sm dark:bg-gray-500"
+        src={img_src}
+      />
+      <div className="flex flex-col">
+        <h4 className="text-xl font-semibold dark:text-gray-600">{nom}</h4>
+        <p className="text-sm dark:text-gray-600">{poste}</p>
+        <div className="flex mt-2 space-x-2">
+          <ul className="mt-12 flex flex-wrap justify-center gap-2 ">
+            <li>
+              <Facebook />
+            </li>
 
-                    <li>
-                      <Instagram />
-                    </li>
+            <li>
+              <Instagram />
+            </li>
 
-                    <li>
-                      <Twitter />
-                    </li>
+            <li>
+              <Twitter />
+            </li>
 
-                    <li>
-                      <Github />
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <li>
+              <Github />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   );
 };
 
 const Header = () => {
   return (
     <>
-      <nav className="bg-gray-800 text-white shadow shadow-gray-300 w-100 px-8 md:px-auto">
+      <nav className="bg-gray-800 text-white shadow shadow-gray-300  px-8 md:px-auto">
         <div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
           {/* <!-- Logo --> */}
           <div className=" md:order-0 flex justify-between">
-            <img src={Logo} className="w-17 object-cover  h-12 rounded-full shadow"/>
-          <h5 className="font-semibold my-4 mx-2 md:order-0 ">
-          Sama pharmacovigile
-          </h5>
-
-        
+            <img
+              src={Logo}
+              className="w-17 object-cover  h-12 rounded-full shadow"
+            />
+            <h5 className="font-semibold my-4 mx-2 md:order-0 ">
+              Sama pharmacovigile
+            </h5>
           </div>
           <div className="text-gray-500 order-3 w-full md:w-auto md:order-2">
             <ul className="flex font-semibold justify-between">
               {/* <!-- Active Link = text-indigo-500
                 Inactive Link = hover:text-indigo-500 --> */}
-              <li className="md:px-4 md:py-2 hover:text-white">
-                A propos 
-              </li>
-              <li className="md:px-4 md:py-2 hover:text-white">
-                Blog
-              </li>
-              <li className="md:px-4 md:py-2 hover:text-white">
-                Explorer
-              </li>
-              
-              <li className="md:px-4 md:py-2 hover:text-white">
-                Contact
-              </li>
-              <li className="md:px-4 md:py-2 hover:text-white">
-                Equipe
-              </li>
+              <li className="md:px-4 md:py-2 hover:text-white">A propos</li>
+              <li className="md:px-4 md:py-2 hover:text-white">Blog</li>
+              <li className="md:px-4 md:py-2 hover:text-white">Explorer</li>
+
+              <li className="md:px-4 md:py-2 hover:text-white">Contact</li>
+              <li className="md:px-4 md:py-2 hover:text-white">Equipe</li>
             </ul>
           </div>
-          
-          <div className="order-2 md:order-3 flex justify-between">
-            <button className="px-4 mx-1 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
-              <LogIn/>
-              <span>Se connecter</span>
-            </button>
-            <button className="px-4 py-2 mx-1 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
-              <LogOut/>
-              <span>Deconnexion</span>
-            </button>
+
+          <div className="order-2 md:order-3 h-12  flex justify-between">
+            <Link to={"/login"}>
+              <Button className="flex items-center gap-3 bg-indigo-500">
+                <LogIn />
+                <span>Se connecter</span>
+              </Button>
+            </Link>
           </div>
         </div>
       </nav>
@@ -115,12 +108,10 @@ const Header = () => {
   );
 };
 
-
 const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white">
-    
-    {/* <div className=" bg-white  px-4 py-2 "></div> */}
+      {/* <div className=" bg-white  px-4 py-2 "></div> */}
 
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="flex justify-center   ">
@@ -164,10 +155,7 @@ const Footer = () => {
           </li>
         </ul>
       </div>
-
     </footer>
-
-    
   );
 };
 
@@ -176,9 +164,9 @@ const LandingPage = () => {
     <>
       <Header />
       <div className="relative z-20 dark:bg-gray-100  flex items-center overflow-hidden ">
-      {/* bg-white dark:bg-gray-800 */}
-        <div className="container relative flex px-6 py-16 mx-auto dark:text-dark">
-          <div className="relative   z-20 flex flex-col sm:w-2/3 lg:w-3/5">
+        {/* bg-white dark:bg-gray-800 */}
+        <div className="container relative flex  py-16 mx-auto dark:text-dark ">
+          <div className="relative mr-20  z-20 flex flex-col sm:w-3/5 lg:w-3/5">
             {/* <span className="w-20 h-2 mb-12 bg-gray-800 dark:bg-white">
             </span> */}
             <h1 className="flex flex-col text-2xl font-black leading-none text-indigo-500 dark:text-indigo-500 uppercase font-bebas-neue sm:text-8xl ">
@@ -204,7 +192,10 @@ const LandingPage = () => {
             </div>
           </div>
           <div className="relative flex-initial hidden  py-5  w-32 sm:block sm:w-1/3 lg:w-2/5">
-            <img src={imgMedicament} className=" max-w-xs  m-auto md:max-w-sm" />
+            <img
+              src={imgMedicament}
+              className=" max-w-xs  m-auto md:max-w-sm"
+            />
           </div>
         </div>
       </div>
@@ -213,8 +204,10 @@ const LandingPage = () => {
         <div className="container px-6 py-10 mx-auto ">
           <h1 className="text-3xl font-semibold text-white capitalize lg:text-4xl dark:text-white">
             Explorer <br /> les{" "}
-            <span className="underline decoration-blue-500">Fonctionnalités</span>
-            {" "}de la plateforme
+            <span className="underline decoration-blue-500">
+              Fonctionnalités
+            </span>{" "}
+            de la plateforme
           </h1>
 
           <p className="mt-4 text-gray-300 xl:mt-6 dark:text-gray-300">
@@ -301,11 +294,11 @@ const LandingPage = () => {
         </div>
       </section>
       {/* <!-- presentation equipe --> */}
-      <section className="">
-      
+      <section className="dark:bg-gray-100">
         <div className="container p-4 mx-auto space-y-16 sm:p-10 dark:bg-gray-100">
+          {/* container p-4 mx-auto space-y-16 sm:p-10 dark:bg-gray-100 */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold leading-none sm:text-5xl text-slate-700">
+            <h3 className="text-2xl font-bold leading-none text-gray-600 sm:text-5xl text-slate-700">
               Rencontrez notre equipe
             </h3>
             <p className="max-w-2xl dark:text-gray-600">
@@ -315,52 +308,51 @@ const LandingPage = () => {
             </p>
           </div>
           <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-          {
-            [
-              { 
-                img_src:homme_2,
-                nom:"Leroy Jenkins",
-                poste:"Web developer"
+            {[
+              {
+                img_src: homme_2,
+                nom: "Leroy Jenkins",
+                poste: "Web developer",
               },
-              { 
-                img_src:femme_1,
-                nom:"Leroy Jenkins",
-                poste:"Web developer"
-              },{ 
-                img_src:femme_2,
-                nom:"Leroy Jenkins",
-                poste:"Web developer"
-              },{ 
-                img_src:homme_3,
-                nom:"Leroy Jenkins",
-                poste:"Web developer"
+              {
+                img_src: femme_1,
+                nom: "Leroy Jenkins",
+                poste: "Web developer",
               },
-              { 
-                img_src:femme_3,
-                nom:"Leroy Jenkins",
-                poste:"Web developer"
+              {
+                img_src: femme_2,
+                nom: "Leroy Jenkins",
+                poste: "Web developer",
               },
-              { 
-                img_src:homme_1,
-                nom:"Leroy Jenkins",
-                poste:"Web developer"
+              {
+                img_src: homme_3,
+                nom: "Leroy Jenkins",
+                poste: "Web developer",
               },
-            ].map((item,index)=>{
-
-              return <TeamItem
-              key={index}
-                img_src={item.img_src}
-                nom={item.nom}
-                poste={item.poste}
-              />
-            }
-            )
-          }
-            
+              {
+                img_src: femme_3,
+                nom: "Leroy Jenkins",
+                poste: "Web developer",
+              },
+              {
+                img_src: homme_1,
+                nom: "Leroy Jenkins",
+                poste: "Web developer",
+              },
+            ].map((item, index) => {
+              return (
+                <TeamItem
+                  key={index}
+                  img_src={item.img_src}
+                  nom={item.nom}
+                  poste={item.poste}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
-      
+
       <Footer />
     </>
   );

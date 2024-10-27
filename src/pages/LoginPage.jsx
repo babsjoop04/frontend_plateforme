@@ -1,11 +1,75 @@
 import Logo from "@/images/logo.jpeg";
 import { LogIn } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Button } from "flowbite-react";
+
+import { useSelector, useDispatch } from 'react-redux'
+
+import {connection} from "@/redux/stateSlice/user/userSlice"
 
 const LoginPage = () => {
+  const [identifiants, setIdentifiants] = useState({
+    email: "",
+    password: "",
+  });
+  const [traitement, setTraitement] = useState(false);
+
+  const navigate = useNavigate();
+
+
+
+  const dispatch = useDispatch()
+
+  const change = (e) => {
+    setIdentifiants({ ...identifiants, [e.target.name]: e.target.value });
+  };
+
+  const submit = (e) => {
+    if (identifiants.email !== "" && identifiants.email !== "") {
+      setTraitement((value) => !value);
+
+      axios.post('/api/login',
+       identifiants
+
+      )
+      .then(function (response) {
+
+      setTraitement((value) => !value);
+
+        
+        // console.log(response.data.token);
+
+        dispatch(connection({
+          
+            infos:response.data.user,
+            token:response.data.token
+          // }
+        }))
+
+        // console.log(user);
+         
+
+
+        // setTimeout(() => {
+        //   navigate("/");
+        // }, 1500);
+
+      })
+      .catch(function (error) {
+      setTraitement((value) => !value);
+
+        console.log(error);
+      })
+
+   
+    }
+  };
+
   return (
     <>
       <section className="">
-        {/* bg-gray-50 dark:bg-gray-900 */}
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="flex justify-center  my-2 ">
             <img src={Logo} className="w-17 object-cover  h-12 rounded-full" />
@@ -18,7 +82,10 @@ const LoginPage = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Se connecter
               </h1>
-              <form className="space-y-4 md:space-y-6" >
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={(e) => e.preventDefault()}
+              >
                 <div>
                   <label
                     htmlFor="email"
@@ -32,7 +99,8 @@ const LoginPage = () => {
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
-                    required=""
+                    required
+                    onChange={(e) => change(e)}
                   />
                 </div>
                 <div>
@@ -48,34 +116,34 @@ const LoginPage = () => {
                     id="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required=""
+                    required
+                    onChange={(e) => change(e)}
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  className=" flex m-auto items-center gap-1 text-white bg-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                <Button
+                  // type="submit"
+                  color="blue"
+                  size="sm"
+                  isProcessing={traitement}
+                  className="m-auto"
+                  // className=" flex m-auto items-center gap-1 text-white bg-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  onClick={(e) => submit(e)}
                 >
-                  <LogIn />
-                  <span>Se connecter</span>
-                </button>
-                
+                  {!traitement && <LogIn />}
+
+                  <span className="mx-2">Se connecter</span>
+                </Button>
+
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Vous n'avez pas de compte ?{" "}
-                  <a
-                    href="#"
-                    className="font-medium text-primary-600 hover:underline decoration-blue-600 dark:text-primary-500"
-                  >
-                    Inscrivez vous
-                  </a>
+                  <Link to={"/signup"}>Inscrivez vous</Link>
                 </p>
               </form>
             </div>
           </div>
         </div>
-        
       </section>
-
     </>
   );
 };

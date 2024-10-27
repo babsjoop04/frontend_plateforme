@@ -1,11 +1,13 @@
 const withMT = require("@material-tailwind/react/utils/withMT");
+
 import plugin from "tailwindcss/plugin";
 import forms from '@tailwindcss/forms';
-
+const flowbite = require("flowbite-react/tailwind");
 export default withMT({
   content: [
     './index.html',
     './src/**/*.{js,jsx,ts,tsx}',
+    flowbite.content(),
   ],
   darkMode: 'class',
   theme: {
@@ -130,6 +132,7 @@ export default withMT({
   },
   plugins: [
     forms,
+    flowbite.plugin(),
     require('@tailwindcss/forms'),
     // add custom variant for expanding sidebar
     plugin(({ addVariant, e }) => {

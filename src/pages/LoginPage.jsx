@@ -1,13 +1,15 @@
 import Logo from "@/images/logo.jpeg";
 import { LogIn } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button } from "flowbite-react";
+import { Button,Alert } from "flowbite-react";
+import { Info } from "lucide-react";
 
-import { useSelector, useDispatch } from 'react-redux'
 
-import {connection} from "@/redux/stateSlice/user/userSlice"
+import { useSelector, useDispatch } from "react-redux";
+
+import { connection } from "@/redux/stateSlice/user/userSlice";
 
 const LoginPage = () => {
   const [identifiants, setIdentifiants] = useState({
@@ -15,12 +17,18 @@ const LoginPage = () => {
     password: "",
   });
   const [traitement, setTraitement] = useState(false);
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
+  // useEffect(() => {
+  //   console.log(errors);
+  // });
 
   const navigate = useNavigate();
 
-
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const change = (e) => {
     setIdentifiants({ ...identifiants, [e.target.name]: e.target.value });
@@ -30,40 +38,56 @@ const LoginPage = () => {
     if (identifiants.email !== "" && identifiants.email !== "") {
       setTraitement((value) => !value);
 
-      axios.post('/api/login',
-       identifiants
+      setErrors({
+        email: "",
+        password: "",
+      });
 
-      )
-      .then(function (response) {
-
-      setTraitement((value) => !value);
-
-        
-        // console.log(response.data.token);
-
-        dispatch(connection({
-          
-            infos:response.data.user,
-            token:response.data.token
-          // }
-        }))
-
-        // console.log(user);
-         
+      axios
+        .post("/api/login", identifiants, {
+          headers: {
+            "Content-Type": "application/json",
+            // application/json multipart/form-data;
+          },
+        })
+        .then(function (response) {
+          setTraitement((value) => !value);
 
 
-        // setTimeout(() => {
-        //   navigate("/");
-        // }, 1500);
+          dispatch(
+            connection({
+              infos: response.data.user,
+              token: response.data.token,
+              // }
+            })
+          );
 
-      })
-      .catch(function (error) {
-      setTraitement((value) => !value);
+          // console.log(user);
 
-        console.log(error);
-      })
+          setTimeout(() => {
+            navigate("/");
+          }, 1500);
+        })
+        .catch(function (error) {
+          const responseErrors = error.response.data.errors;
 
-   
+          let newErrorMessage = { 
+            email: "",
+            password: "",
+          };
+
+          for (const key in responseErrors) {
+            newErrorMessage = {
+              ...newErrorMessage,
+              [key]: responseErrors[key],
+            };
+          }
+
+          setErrors(newErrorMessage);
+
+          setTraitement((value) => !value);
+
+        });
     }
   };
 
@@ -102,6 +126,13 @@ const LoginPage = () => {
                     required
                     onChange={(e) => change(e)}
                   />
+                  {errors.email !== "" && (
+                    <div className="  my-2 text-sm font-medium  ">
+                      <Alert color="failure" icon={Info}>
+                        {errors.email}
+                      </Alert>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label
@@ -119,6 +150,13 @@ const LoginPage = () => {
                     required
                     onChange={(e) => change(e)}
                   />
+                  {errors.password !== "" && (
+                    <div className="  my-2 text-sm font-medium  ">
+                      <Alert color="failure" icon={Info}>
+                        {errors.password}
+                      </Alert>
+                    </div>
+                  )}
                 </div>
 
                 <Button
@@ -137,7 +175,12 @@ const LoginPage = () => {
 
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Vous n'avez pas de compte ?{" "}
-                  <Link to={"/signup"}>Inscrivez vous</Link>
+                  <Link
+                    to={"/signup"}
+                    className="hover:underline decoration-indigo-600"
+                  >
+                    Inscrivez vous
+                  </Link>
                 </p>
               </form>
             </div>

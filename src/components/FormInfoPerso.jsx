@@ -1,9 +1,11 @@
+import { Alert } from "flowbite-react";
 
+import { Info } from "lucide-react";
 
-const FormInfoPerso = ({ change, userData }) => {
-    return (
-        <>
-      <div className="grid grid-cols-2 gap-8">
+const FormInfoPerso = ({ change, userData, errors }) => {
+  return (
+    <>
+      <div className="grid w-full grid-cols-2 gap-8">
         <div>
           <label
             htmlFor="prenom"
@@ -21,7 +23,15 @@ const FormInfoPerso = ({ change, userData }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.prenom}
           />
+          {errors.prenom !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.prenom}
+              </Alert>
+            </div>
+          )}
         </div>
+
         <div>
           <label
             htmlFor="nom"
@@ -39,6 +49,13 @@ const FormInfoPerso = ({ change, userData }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.nom}
           />
+          {errors.nom !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.nom}
+              </Alert>
+            </div>
+          )}
         </div>
         <div>
           <label
@@ -56,6 +73,13 @@ const FormInfoPerso = ({ change, userData }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.dateNaissance}
           />
+          {errors.dateNaissance !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.dateNaissance}
+              </Alert>
+            </div>
+          )}
         </div>
         <div>
           <label
@@ -74,6 +98,13 @@ const FormInfoPerso = ({ change, userData }) => {
             <option value="homme">Homme</option>
             <option value="femme">Femme</option>
           </select>
+          {errors.sexe !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.sexe}
+              </Alert>
+            </div>
+          )}
         </div>
         <div>
           <label
@@ -92,6 +123,13 @@ const FormInfoPerso = ({ change, userData }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.profession}
           />
+          {errors.profession !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.profession}
+              </Alert>
+            </div>
+          )}
         </div>
         <div>
           <label
@@ -110,6 +148,13 @@ const FormInfoPerso = ({ change, userData }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.adresse}
           />
+          {errors.adresse !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.adresse}
+              </Alert>
+            </div>
+          )}
         </div>
         <div>
           <label
@@ -128,10 +173,17 @@ const FormInfoPerso = ({ change, userData }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.telephone}
           />
+          {errors.telephone !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.telephone}
+              </Alert>
+            </div>
+          )}
         </div>
       </div>
     </>
-    );
+  );
 };
 
 export default FormInfoPerso;

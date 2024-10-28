@@ -1,9 +1,10 @@
+import { Alert } from "flowbite-react";
+import { Info } from "lucide-react";
 
-
-const FormIdentifiants = ({ change , userData}) => {
-    return (
-        <>
-      <div className="grid grid-cols-1 gap-8">
+const FormIdentifiants = ({ change, userData, errors }) => {
+  return (
+    <>
+      <div className="grid w-4/5 mx-auto grid-cols-1 gap-8">
         <div>
           <label
             htmlFor="email"
@@ -20,14 +21,19 @@ const FormIdentifiants = ({ change , userData}) => {
             required
             onChange={(e) => change(e)}
             defaultValue={userData.email}
-
           />
+          {errors.email !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.email}
+              </Alert>
+            </div>
+          )}
         </div>
         <div>
           <label
             htmlFor="password"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-
           >
             Mot de passe
           </label>
@@ -40,8 +46,14 @@ const FormIdentifiants = ({ change , userData}) => {
             onChange={(e) => change(e)}
             placeholder="••••••••"
             defaultValue={userData.password}
-
           />
+          {errors.password !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.password}
+              </Alert>
+            </div>
+          )}
         </div>
         <div>
           <label
@@ -59,12 +71,18 @@ const FormIdentifiants = ({ change , userData}) => {
             required
             onChange={(e) => change(e)}
             defaultValue={userData.password_confirmation}
-
           />
+          {/* {errors.email !== "" && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.email}
+              </Alert>
+            </div>
+          )} */}
         </div>
       </div>
     </>
-    );
+  );
 };
 
 export default FormIdentifiants;

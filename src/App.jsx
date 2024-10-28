@@ -10,6 +10,9 @@ import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import Home from "./pages/Home";
+
+
 
 function App() {
   const location = useLocation();
@@ -23,7 +26,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route index  element={<LandingPage />} />
+        <Route index  element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
       </Routes>

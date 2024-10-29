@@ -5,6 +5,7 @@ import Notifications from '../components/DropdownNotifications';
 import Help from '../components/DropdownHelp';
 import UserMenu from '../components/DropdownProfile';
 import ThemeToggle from '../components/ThemeToggle';
+import { Menu } from 'lucide-react';
 
 function Header({
   sidebarOpen,
@@ -30,11 +31,7 @@ function Header({
               onClick={(e) => { e.stopPropagation(); setSidebarOpen(!sidebarOpen); }}
             >
               <span className="sr-only">Open sidebar</span>
-              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <rect x="4" y="5" width="16" height="2" />
-                <rect x="4" y="11" width="16" height="2" />
-                <rect x="4" y="17" width="16" height="2" />
-              </svg>
+              <Menu />
             </button>
 
           </div>

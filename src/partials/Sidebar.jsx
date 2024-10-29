@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
+import Logo from "@/images/logo.jpeg";
+
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import { now } from "moment/moment";
+import { ArrowLeftFromLine, ArrowRightFromLine, PillBottle, UserCog } from "lucide-react";
 
 function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const location = useLocation();
@@ -10,6 +13,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
 
   // const trigger = useRef(null);
   const sidebar = useRef(null);
+
 
   const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
 
@@ -62,30 +66,23 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
         {/* Sidebar header */}
         <div className="flex justify-between mb-10 pr-3 sm:px-2">
           {/* Close button */}
-          {/* <button
-            ref={trigger}
-            className="lg:hidden text-gray-500 hover:text-gray-400"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            aria-controls="sidebar"
-            aria-expanded={sidebarOpen}
-          >
-            <span className="sr-only">Close sidebar</span>
-            <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10.7 18.7l1.4-1.4L7.8 13H20v-2H7.8l4.3-4.3-1.4-1.4L4 12z" />
-            </svg>
-          </button> */}
-          {/* Logo */}
+          
           <span className="block">
-            {/* <NavLink end to="/" className="block"> */}
-            <svg
-              className="fill-violet-500"
-              xmlns="http://www.w3.org/2000/svg"
-              width={32}
-              height={32}
-            >
-              <path d="M31.956 14.8C31.372 6.92 25.08.628 17.2.044V5.76a9.04 9.04 0 0 0 9.04 9.04h5.716ZM14.8 26.24v5.716C6.92 31.372.63 25.08.044 17.2H5.76a9.04 9.04 0 0 1 9.04 9.04Zm11.44-9.04h5.716c-.584 7.88-6.876 14.172-14.756 14.756V26.24a9.04 9.04 0 0 1 9.04-9.04ZM.044 14.8C.63 6.92 6.92.628 14.8.044V5.76a9.04 9.04 0 0 1-9.04 9.04H.044Z" />
-            </svg>
-            {/* </NavLink> */}
+            <NavLink end to="/" className="block">
+              <div className=" flex flex-col ">
+                <img
+                  src={Logo}
+                  className="w-32   object-cover   rounded-full shadow"
+                />
+                <h6
+                  className={`font-semibold my-4   text-white ${
+                    sidebarExpanded ? "" : "hidden"
+                  }`}
+                >
+                  Sama pharmacovigile
+                </h6>
+              </div>
+            </NavLink>
           </span>
         </div>
 
@@ -106,131 +103,159 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
             </h3>
             <ul className="mt-3">
               {/* Dashboard */}
-              <SidebarLinkGroup
-                activecondition={
-                  pathname === "/" || pathname.includes("dashboard")
-                }
-                key={now()}
-                pathname={pathname}
-                setSidebarExpanded={setSidebarExpanded}
-                titre="Dashboard"
-                liste_sous_section={[
-                  {
-                    id: now(),
-                    to: "/",
-                    titre: "Main",
-                    isActive: pathname === "/" || pathname.includes("dashboard")
-                
-                  },
-                  {
-                    id: now(),
-                    to: "/",
-                    titre: "Mai",
-                    isActive: false
-                
-                  },
-                ]}
-              />
+            
+              {[
+                //admin
+                {
+                  activecondition:
+                    pathname === "/" || pathname.includes("dashboard"),
+                  key: new Date().getTime(),
+                  titre: "Utilisateurs",
+
+                  liste_sous_section: [
+                    {
+                      id: new Date().getTime(),
+                      to: "/",
+                      titre: "Demandes d'inscription",
+                      isActive:
+                        pathname === "/" || pathname.includes("dashboard"),
+                    },
+                    {
+                      id: new Date().getTime(),
+                      to: "/",
+                      titre: "Gestion des utilisateurs",
+                      isActive:
+                        pathname === "/" || pathname.includes("dashboard"),
+                    },
+                  ],
+                },
+
+                {
+                  activecondition:
+                    pathname === "/" || pathname.includes("dashboard"),
+                  key: new Date().getTime(),
+                  titre: "Produit de sante",
+                  liste_sous_section: [
+                    {
+                      id: new Date().getTime(),
+                      to: "/",
+                      titre: "Ajouter un produit",
+                      isActive:
+                        pathname === "/" || pathname.includes("dashboard"),
+                    },
+                    {
+                      id: new Date().getTime(),
+                      to: "/",
+                      titre: "Gestion des produits",
+                      isActive:
+                        pathname === "/" || pathname.includes("dashboard"),
+                    },
+                  ],
+                },
+                {
+                  activecondition:
+                    pathname === "/" || pathname.includes("dashboard"),
+                  key: new Date().getTime(),
+                  titre: "Notifications",
+
+                  liste_sous_section: [
+                    {
+                      id: new Date().getTime(),
+                      to: "/",
+                      titre: "Suspition de defaut de qualité (PQIF)",
+                      isActive:
+                        pathname === "/" || pathname.includes("dashboard"),
+                    },
+                    {
+                      id: new Date().getTime(),
+                      to: "/",
+                      titre: "Manifestation post vaccinale indesrirable (MAPI)",
+                      isActive:
+                        pathname === "/" || pathname.includes("dashboard"),
+                    },
+                    {
+                      id: new Date().getTime(),
+                      to: "/",
+                      titre:
+                        "Effet/événement indesrirables des médicaments (EEIM)",
+                      isActive:
+                        pathname === "/" || pathname.includes("dashboard"),
+                    },
+                  ],
+                },
+              ].map((element, index) => {
+                return (
+                  <SidebarLinkGroup
+                    activecondition={element.activecondition}
+                    key={element.key + index}
+                    pathname={pathname}
+                    setSidebarExpanded={setSidebarExpanded}
+                    titre={element.titre}
+                    liste_sous_section={element.liste_sous_section}
+                  />
+                );
+              })}
 
               {/* Messages */}
-              {/* <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("messages") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
+              <li
+                className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${
+                  pathname.includes("messages") &&
+                  "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
+                }`}
+              >
                 <NavLink
                   end
                   to="/"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("messages") ? "" : "hover:text-gray-900 dark:hover:text-white"
+                    pathname.includes("messages")
+                      ? ""
+                      : "hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="grow flex items-center">
-                      <svg className={`shrink-0 fill-current ${pathname.includes('messages') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                        <path d="M13.95.879a3 3 0 0 0-4.243 0L1.293 9.293a1 1 0 0 0-.274.51l-1 5a1 1 0 0 0 1.177 1.177l5-1a1 1 0 0 0 .511-.273l8.414-8.414a3 3 0 0 0 0-4.242L13.95.879ZM11.12 2.293a1 1 0 0 1 1.414 0l1.172 1.172a1 1 0 0 1 0 1.414l-8.2 8.2-3.232.646.646-3.232 8.2-8.2Z" />
-                        <path d="M10 14a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2h-5Z" />
-                      </svg>
+                    <div className="grow flex items-center ">
+                      <span
+                        className={` ${
+                          pathname.includes("/")
+                            ? "text-violet-500"
+                            : "text-gray-400 dark:text-gray-500"
+                        }`}
+                      >
+                        <PillBottle size={21}/>
+                      </span>
+
                       <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                        Messages
+                        S'informer 
                       </span>
                     </div>
-                    
-                    <div className="flex flex-shrink-0 ml-2">
-                      <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-violet-400 px-2 rounded">4</span>
-                    </div>
+
+                    {/* <div className="flex flex-shrink-0 ml-2">
+                      <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-violet-400 px-2 rounded">
+                        4
+                      </span>
+                    </div> */}
                   </div>
                 </NavLink>
-              </li> */}
-              {/* Inbox */}
-              {/* <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("inbox") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
-                <NavLink
-                  end
-                  to="https://cruip.com/mosaic/"
-                  className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("inbox") ? "" : "hover:text-gray-900 dark:hover:text-white"
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <svg className={`shrink-0 fill-current ${pathname.includes('inbox') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                      <path d="M11.92 6.851c.044-.027.09-.05.137-.07.481-.275.758-.68.908-1.256.126-.55.169-.81.357-2.058.075-.498.144-.91.217-1.264-4.122.75-7.087 2.984-9.12 6.284a18.087 18.087 0 0 0-1.985 4.585 17.07 17.07 0 0 0-.354 1.506c-.05.265-.076.448-.086.535a1 1 0 0 1-1.988-.226c.056-.49.209-1.312.502-2.357a20.063 20.063 0 0 1 2.208-5.09C5.31 3.226 9.306.494 14.913.004a1 1 0 0 1 .954 1.494c-.237.414-.375.993-.567 2.267-.197 1.306-.244 1.586-.392 2.235-.285 1.094-.789 1.853-1.552 2.363-.748 3.816-3.976 5.06-8.515 4.326a1 1 0 0 1 .318-1.974c2.954.477 4.918.025 5.808-1.556-.628.085-1.335.121-2.127.121a1 1 0 1 1 0-2c1.458 0 2.434-.116 3.08-.429Z" />
-                    </svg>
-                    <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Inbox</span>
-                  </div>
-                </NavLink>
-              </li> */}
-              {/* Calendar */}
-              {/* <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("calendar") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
-                <NavLink
-                  end
-                  to="https://cruip.com/mosaic/"
-                  className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("calendar") ? "" : "hover:text-gray-900 dark:hover:text-white"
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <svg className={`shrink-0 fill-current ${pathname.includes('calendar') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                      <path d="M5 4a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H5Z" />
-                      <path d="M4 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4ZM2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4Z" />
-                      <path d="M4 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4ZM2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4Z" />
-                    </svg>
-                    <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                      Calendar
-                    </span>
-                  </div>
-                </NavLink>
-              </li> */}
-              {/* Campaigns */}
-              {/* <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("campaigns") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
-                <NavLink
-                  end
-                  to="https://cruip.com/mosaic/"
-                  className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("campaigns") ? "" : "hover:text-gray-900 dark:hover:text-white"
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <svg className={`shrink-0 fill-current ${pathname.includes('campaigns') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                        <path d="M6.649 1.018a1 1 0 0 1 .793 1.171L6.997 4.5h3.464l.517-2.689a1 1 0 1 1 1.964.378L12.498 4.5h2.422a1 1 0 0 1 0 2h-2.807l-.77 4h2.117a1 1 0 1 1 0 2h-2.501l-.517 2.689a1 1 0 1 1-1.964-.378l.444-2.311H5.46l-.517 2.689a1 1 0 1 1-1.964-.378l.444-2.311H1a1 1 0 1 1 0-2h2.807l.77-4H2.46a1 1 0 0 1 0-2h2.5l.518-2.689a1 1 0 0 1 1.17-.793ZM9.307 10.5l.77-4H6.612l-.77 4h3.464Z" />
-                    </svg>
-                    <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                      Campaigns
-                    </span>
-                  </div>
-                </NavLink>
-              </li> */}
+              </li>
             </ul>
           </div>
         </div>
 
         {/* Expand / collapse button */}
         <div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
-          <div className="w-12 pl-4 pr-3 py-2">
+          <div className="w-12 pl-4 pr-3 mt-4">
             <button
               className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
               onClick={() => setSidebarExpanded(!sidebarExpanded)}
             >
               <span className="sr-only">Expand / collapse sidebar</span>
-              {/* <svg className="shrink-0 fill-current text-gray-400 dark:text-gray-500 sidebar-expanded:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                <path d="M15 16a1 1 0 0 1-1-1V1a1 1 0 1 1 2 0v14a1 1 0 0 1-1 1ZM8.586 7H1a1 1 0 1 0 0 2h7.586l-2.793 2.793a1 1 0 1 0 1.414 1.414l4.5-4.5A.997.997 0 0 0 12 8.01M11.924 7.617a.997.997 0 0 0-.217-.324l-4.5-4.5a1 1 0 0 0-1.414 1.414L8.586 7M12 7.99a.996.996 0 0 0-.076-.373Z" />
-              </svg> */}
-              hello icon
+              <span className="text-violet-500">
+                {sidebarExpanded ? (
+                  <ArrowLeftFromLine />
+                ) : (
+                  <ArrowRightFromLine />
+                )}
+              </span>
             </button>
           </div>
         </div>

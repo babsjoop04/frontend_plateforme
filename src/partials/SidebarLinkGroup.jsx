@@ -41,10 +41,10 @@ const SidebarLinkGroup = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <span className="text-violet-500 ">
-            {/* {activecondition ? "text-violet-500" : "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"} */}
-            {titre === "Utilisateurs" && <UserCog size={21}  />}
-            {titre === "Notifications" && <Send size={21}/>}
-            {titre === "Produit de sante" && <Pill size={21}/>}
+              {/* {activecondition ? "text-violet-500" : "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"} */}
+              {titre === "Utilisateurs" && <UserCog size={21} />}
+              {titre === "Notifications" && <Send size={21} />}
+              {titre === "Produit de sante" && <Pill size={21} />}
             </span>
             <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
               {titre}
@@ -52,14 +52,7 @@ const SidebarLinkGroup = ({
           </div>
           {/* Icon */}
           <div className="flex shrink-0 ml-2 ">
-            {
-              open ?
-
-            <ChevronUp />
-            :
-            <ChevronDown />
-            }
-            
+            {open ? <ChevronUp /> : <ChevronDown />}
           </div>
         </div>
       </span>
@@ -79,7 +72,12 @@ const SidebarLinkGroup = ({
                       : "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200")
                   }
                 >
-                  <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                  <span className={`text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${
+                          isActive
+                            ? "text-violet-500"
+                            : "text-gray-400 dark:text-gray-500"
+                        }`}>
+                  {/* className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200" */}
                     {titre}
                   </span>
                 </NavLink>

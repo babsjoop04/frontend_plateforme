@@ -5,7 +5,12 @@ import Logo from "@/images/logo.jpeg";
 
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import { now } from "moment/moment";
-import { ArrowLeftFromLine, ArrowRightFromLine, PillBottle, UserCog } from "lucide-react";
+import {
+  ArrowLeftFromLine,
+  ArrowRightFromLine,
+  PillBottle,
+  UserCog,
+} from "lucide-react";
 
 function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const location = useLocation();
@@ -13,7 +18,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
 
   // const trigger = useRef(null);
   const sidebar = useRef(null);
-
 
   const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
 
@@ -66,7 +70,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
         {/* Sidebar header */}
         <div className="flex justify-between mb-10 pr-3 sm:px-2">
           {/* Close button */}
-          
+
           <span className="block">
             <NavLink end to="/" className="block">
               <div className=" flex flex-col ">
@@ -75,7 +79,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   className="w-32   object-cover   rounded-full shadow"
                 />
                 <h6
-                  className={`font-semibold my-4   text-white ${
+                  className={`font-semibold my-4   text-gray-800 dark:text-gray-100 ${
                     sidebarExpanded ? "" : "hidden"
                   }`}
                 >
@@ -103,7 +107,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
             </h3>
             <ul className="mt-3">
               {/* Dashboard */}
-            
+
               {[
                 //admin
                 {
@@ -115,17 +119,17 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   liste_sous_section: [
                     {
                       id: new Date().getTime(),
-                      to: "/",
+                      to: "/utilisateurs/demandes",
                       titre: "Demandes d'inscription",
                       isActive:
-                        pathname === "/" || pathname.includes("dashboard"),
+                        pathname === "/utilisateurs/demandes",
                     },
                     {
                       id: new Date().getTime(),
-                      to: "/",
+                      to: "/utilisateurs/gestion",
                       titre: "Gestion des utilisateurs",
                       isActive:
-                        pathname === "/" || pathname.includes("dashboard"),
+                        pathname === "/utilisateurs/gestion",
                     },
                   ],
                 },
@@ -138,17 +142,17 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   liste_sous_section: [
                     {
                       id: new Date().getTime(),
-                      to: "/",
+                      to: "/produits/ajout",
                       titre: "Ajouter un produit",
                       isActive:
-                        pathname === "/" || pathname.includes("dashboard"),
+                        pathname === "/produits/ajout",
                     },
                     {
                       id: new Date().getTime(),
-                      to: "/",
+                      to: "/produits/gestion",
                       titre: "Gestion des produits",
                       isActive:
-                        pathname === "/" || pathname.includes("dashboard"),
+                        pathname === "/produits/gestion",
                     },
                   ],
                 },
@@ -161,25 +165,25 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   liste_sous_section: [
                     {
                       id: new Date().getTime(),
-                      to: "/",
+                      to: "/notification/pqif",
                       titre: "Suspition de defaut de qualité (PQIF)",
                       isActive:
-                        pathname === "/" || pathname.includes("dashboard"),
+                        pathname === "/notification/pqif",
                     },
                     {
                       id: new Date().getTime(),
-                      to: "/",
+                      to: "/notification/mapi",
                       titre: "Manifestation post vaccinale indesrirable (MAPI)",
                       isActive:
-                        pathname === "/" || pathname.includes("dashboard"),
+                        pathname === "/notification/mapi",
                     },
                     {
                       id: new Date().getTime(),
-                      to: "/",
+                      to: "/notification/eeim",
                       titre:
                         "Effet/événement indesrirables des médicaments (EEIM)",
                       isActive:
-                        pathname === "/" || pathname.includes("dashboard"),
+                        pathname === "/notification/eeim" ,
                     },
                   ],
                 },
@@ -205,9 +209,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
               >
                 <NavLink
                   end
-                  to="/"
+                  to="/sinformer"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("messages")
+                    pathname.includes("sinformer")
                       ? ""
                       : "hover:text-gray-900 dark:hover:text-white"
                   }`}
@@ -216,16 +220,21 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                     <div className="grow flex items-center ">
                       <span
                         className={` ${
-                          pathname.includes("/")
+                          pathname.includes("/sinformer")
                             ? "text-violet-500"
                             : "text-gray-400 dark:text-gray-500"
                         }`}
                       >
-                        <PillBottle size={21}/>
+                        <PillBottle size={21} />
                       </span>
-
-                      <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                        S'informer 
+                      <span
+                        className={`text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${
+                          pathname.includes("/sinformer")
+                            ? "text-violet-500"
+                            : "text-gray-400 dark:text-gray-500"
+                        }`}
+                      >
+                        S'informer
                       </span>
                     </div>
 

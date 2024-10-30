@@ -12,6 +12,22 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import PrivateHome from "./pages/PrivateHome";
 import Home from "./pages/Home";
+import Sinformer from "./pages/Sinformer";
+import GestionUtilisateurs from "./pages/GestionUtilisateurs";
+import DemandeInscription from "./pages/DemandeInscription";
+
+import GestionProduits from "./pages/GestionProduits";
+import AjoutProduits from "./pages/AjoutProduits";
+
+import NotificationEEIM from "./pages/NotificationEEIM";
+import NotificationPQIF from "./pages/NotificationPQIF";
+import NotificationMAPI from "./pages/NotificationMAPI";
+
+
+
+
+
+
 
 
 
@@ -30,6 +46,21 @@ function App() {
         {/* <Route index  element={<PrivateHome />} /> */}
         {/* <Route index  element={<Dashboard />} /> */}
         <Route index  element={<Home />} />
+        <Route  path="/sinformer"  element={<Sinformer />} />
+        <Route  path="/utilisateurs/gestion"  element={<GestionUtilisateurs />} />
+        <Route  path="/utilisateurs/demandes"  element={<DemandeInscription />} />
+        <Route  path="/produits/gestion"  element={<GestionProduits />} />
+        <Route  path="/produits/ajout"  element={<AjoutProduits />} />
+
+        <Route  path="/notification/eeim"  element={<NotificationEEIM />} />
+        <Route  path="/notification/mapi"  element={<NotificationMAPI />} />
+        <Route  path="/notification/pqif"  element={<NotificationPQIF />} />
+
+
+
+
+
+
 
 
         <Route path="/login" element={<LoginPage />} />

@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Transition from "../utils/Transition";
 import axios from "axios";
 
-import UserAvatar from "../images/user-avatar-32.png";
 import { LogOut, TableOfContents } from "lucide-react";
 
 import { useSelector, useDispatch } from "react-redux";

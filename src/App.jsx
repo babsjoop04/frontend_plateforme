@@ -44,8 +44,8 @@ function App() {
     <>
       <Routes>
         {/* <Route index  element={<PrivateHome />} /> */}
-        {/* <Route index  element={<Dashboard />} /> */}
-        <Route index  element={<Home />} />
+        <Route index  element={<Dashboard />} />
+        {/* <Route index  element={<Home />} /> */}
         <Route  path="/sinformer"  element={<Sinformer />} />
         <Route  path="/utilisateurs/gestion"  element={<GestionUtilisateurs />} />
         <Route  path="/utilisateurs/demandes"  element={<DemandeInscription />} />

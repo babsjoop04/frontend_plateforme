@@ -90,11 +90,11 @@ const Home = () => {
                 {/* </p> */}
               </section>
 
-              <section className="  px-10 py-10 mx-auto rounded-xl bg-white dark:bg-gray-800 ">
+              <section className="  px-10 py-10 mx-auto rounded-xl  ">
               <h1 className="text-2xl md:text-3xl mb-6 text-gray-800 dark:text-gray-100 font-bold">
                   Fonctionnalités
                 </h1>
-                <div className="grid grid-cols-2 gap-6 ">
+                <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-20 sm:p-20  md:p-10 rounded-xl bg-white dark:bg-gray-800">
                 
                   <Card
                     className="max-w-sm "
@@ -102,7 +102,7 @@ const Home = () => {
                       <img
                         // width={500}
                         // height={500}
-                        className=" mt-auto mx-auto"
+                        className=" mt-auto "
                         src={imgEEIM}
                         alt="image 1"
                       />

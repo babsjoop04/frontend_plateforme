@@ -4,7 +4,8 @@ import { NavLink, useLocation } from "react-router-dom";
 import Logo from "@/images/logo.jpeg";
 
 import SidebarLinkGroup from "./SidebarLinkGroup";
-import { now } from "moment/moment";
+import SidebarLinks from "./SidebarLinks";
+
 import {
   ArrowLeftFromLine,
   ArrowRightFromLine,
@@ -108,11 +109,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
             <ul className="mt-3">
               {/* Dashboard */}
 
-              {[
+              {/* {[
                 //admin
                 {
                   activecondition:
-                    pathname === "/" || pathname.includes("dashboard"),
+                     pathname.includes("utilisateurs"),
                   key: new Date().getTime(),
                   titre: "Utilisateurs",
 
@@ -136,7 +137,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
 
                 {
                   activecondition:
-                    pathname === "/" || pathname.includes("dashboard"),
+                    pathname.includes("/produits"),
                   key: new Date().getTime(),
                   titre: "Produit de sante",
                   liste_sous_section: [
@@ -158,7 +159,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 },
                 {
                   activecondition:
-                    pathname === "/" || pathname.includes("dashboard"),
+                     pathname.includes("/notification"),
                   key: new Date().getTime(),
                   titre: "Notifications",
 
@@ -198,12 +199,15 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                     liste_sous_section={element.liste_sous_section}
                   />
                 );
-              })}
+              })} */}
+
+              <SidebarLinks pathname={pathname} setSidebarExpanded={setSidebarExpanded} />
 
               {/* Messages */}
               <li
+              key={new Date().getTime()}
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${
-                  pathname.includes("messages") &&
+                  pathname.includes("/sinformer") &&
                   "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
                 }`}
               >
@@ -228,11 +232,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                         <PillBottle size={21} />
                       </span>
                       <span
-                        className={`text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${
-                          pathname.includes("/sinformer")
-                            ? "text-violet-500"
-                            : "text-gray-400 dark:text-gray-500"
-                        }`}
+                        className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
                       >
                         S'informer
                       </span>

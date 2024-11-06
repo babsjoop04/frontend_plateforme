@@ -23,14 +23,14 @@ function ModalSearch({
   });
 
   // close if the esc key is pressed
-  useEffect(() => {
-    const keyHandler = ({ keyCode }) => {
-      if (!modalOpen || keyCode !== 27) return;
-      setModalOpen(false);
-    };
-    document.addEventListener('keydown', keyHandler);
-    return () => document.removeEventListener('keydown', keyHandler);
-  });
+  // useEffect(() => {
+  //   const keyHandler = ({ keyCode }) => {
+  //     if (!modalOpen || keyCode !== 27) return;
+  //     setModalOpen(false);
+  //   };
+  //   document.addEventListener('keydown', keyHandler);
+  //   return () => document.removeEventListener('keydown', keyHandler);
+  // });
 
   useEffect(() => {
     modalOpen && searchInput.current.focus();

@@ -43,14 +43,14 @@ function DropdownFilter({ align }) {
   });
 
   // close if the esc key is pressed
-  useEffect(() => {
-    const keyHandler = ({ keyCode }) => {
-      if (!dropdownOpen || keyCode !== 27) return;
-      setDropdownOpen(false);
-    };
-    document.addEventListener("keydown", keyHandler);
-    return () => document.removeEventListener("keydown", keyHandler);
-  });
+  // useEffect(() => {
+  //   const keyHandler = ({ keyCode }) => {
+  //     if (!dropdownOpen || keyCode !== 27) return;
+  //     setDropdownOpen(false);
+  //   };
+  //   document.addEventListener("keydown", keyHandler);
+  //   return () => document.removeEventListener("keydown", keyHandler);
+  // });
 
   return (
     <div className="relative inline-flex">

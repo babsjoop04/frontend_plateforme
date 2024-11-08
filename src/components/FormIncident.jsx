@@ -1,7 +1,7 @@
 import { Alert } from "flowbite-react";
 import { Info } from "lucide-react";
 
-const FormIncident = ({change}) => {
+const FormIncident = ({change,errors,notificationData}) => {
   return (
     <>
       <form className="mx-auto w-9/12" onSubmit={(e) => e.preventDefault()}>
@@ -22,14 +22,15 @@ const FormIncident = ({change}) => {
               placeholder=""
               required
               onChange={(e) => change(e)}
+              defaultValue={notificationData.description_evenement}
             ></textarea>
-            {/* {errors.email !== "" && (
+            {errors.description_evenement && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
-                {errors.email}
+                {errors.description_evenement}
               </Alert>
             </div>
-            )} */}
+            )}
           </div>
           <div>
             <label
@@ -46,15 +47,15 @@ const FormIncident = ({change}) => {
               placeholder=""
               required
               onChange={(e) => change(e)}
-              // defaultValue={userData.email}
+              defaultValue={notificationData.date_apparition_evenement}
             />
-            {/* {errors.email !== "" && (
+            {errors.date_apparition_evenement  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
-                {errors.email}
+                {errors.date_apparition_evenement}
               </Alert>
             </div>
-            )} */}
+            )}
           </div>
           <div>
             <label
@@ -71,15 +72,15 @@ const FormIncident = ({change}) => {
               placeholder=""
               required
               onChange={(e) => change(e)}
-              // defaultValue={userData.email}
+              defaultValue={notificationData.date_disparition_evenement}
             />
-            {/* {errors.email !== "" && (
+            {errors.date_disparition_evenement  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
-                {errors.email}
+                {errors.date_disparition_evenement}
               </Alert>
             </div>
-            )} */}
+            )}
           </div>
 
           <div className="w-4/5">
@@ -96,8 +97,9 @@ const FormIncident = ({change}) => {
                 name="readministration"
                 value={"1"}
                 className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                // checked
+                // defaultChecked
                 onChange={(e) => change(e)}
+                defaultChecked={notificationData.readministration==="1"}
               />
               <label
                 // for="country-option-1"
@@ -111,8 +113,10 @@ const FormIncident = ({change}) => {
                 name="readministration"
                 value={"0"}
                 onChange={(e) => change(e)}
+                defaultChecked={notificationData.readministration==="0"}
+
                 className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                // checked
+                // defaultChecked
               />
               <label
                 // for="country-option-1"
@@ -121,15 +125,18 @@ const FormIncident = ({change}) => {
                 Non
               </label>
             </div>
+
+            {errors.readministration  && (
             <div className="  my-2 text-sm font-medium  ">
-              {/* <Alert color="failure" icon={Info}>
-                {errors.email}
-              </Alert> */}
+              <Alert color="failure" icon={Info}>
+                {errors.readministration}
+              </Alert>
             </div>
+            )}
           </div>
           <div className="w-4/5">
             <label
-              //   htmlFor="date_disparition_evenement"
+              //   htmlFor="reapparition_apres_readministration"
               className="block mb-5 text-sm font-medium text-gray-900 dark:text-white"
             >
               Ré apparition
@@ -141,7 +148,9 @@ const FormIncident = ({change}) => {
                 name="reapparition_apres_readministration"
                 value={"1"}
                 className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                // checked
+                // defaultChecked
+                defaultChecked={notificationData.reapparition_apres_readministration==="1"}
+
               />
               <label
                 // for="country-option-1"
@@ -155,7 +164,9 @@ const FormIncident = ({change}) => {
                 name="reapparition_apres_readministration"
                 value={"0"}
                 className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                // checked
+                // defaultChecked
+                defaultChecked={notificationData.reapparition_apres_readministration==="0"}
+
               />
               <label
                 // for="country-option-1"
@@ -164,11 +175,13 @@ const FormIncident = ({change}) => {
                 Non
               </label>
             </div>
+            {errors.reapparition_apres_readministration  && (
             <div className="  my-2 text-sm font-medium  ">
-              {/* <Alert color="failure" icon={Info}>
-                {errors.email}
-              </Alert> */}
+              <Alert color="failure" icon={Info}>
+                {errors.reapparition_apres_readministration}
+              </Alert>
             </div>
+            )}
           </div>
           <div className="w-4/5">
             <label
@@ -185,7 +198,9 @@ const FormIncident = ({change}) => {
                 value={"1"}
                 onChange={(e) => change(e)}
                 className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                // checked
+                // defaultChecked
+                defaultChecked={notificationData.traitement_correcteur==="1"}
+
               />
               <label
                 // for="country-option-1"
@@ -198,10 +213,12 @@ const FormIncident = ({change}) => {
                 type="radio"
                 name="traitement_correcteur"
                 value={"0"}
-                // checked
+                // defaultChecked
                 className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                // checked
+                // defaultChecked
                 onChange={(e) => change(e)}
+                defaultChecked={notificationData.traitement_correcteur==="0"}
+
               />
               <label
                 // for="country-option-1"
@@ -210,11 +227,13 @@ const FormIncident = ({change}) => {
                 Non
               </label>
             </div>
+            {errors.traitement_correcteur  && (
             <div className="  my-2 text-sm font-medium  ">
-              {/* <Alert color="failure" icon={Info}>
-                {errors.email}
-              </Alert> */}
+              <Alert color="failure" icon={Info}>
+                {errors.traitement_correcteur}
+              </Alert>
             </div>
+            )}
           </div>
           <div>
             <label
@@ -232,14 +251,16 @@ const FormIncident = ({change}) => {
               placeholder=""
               required
               onChange={(e) => change(e)}
+              defaultValue={notificationData.text_traitement_correcteur}
+
             ></textarea>
-            {/* {errors.email !== "" && (
+            {errors.text_traitement_correcteur  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
-                {errors.email}
+                {errors.text_traitement_correcteur}
               </Alert>
             </div>
-            )} */}
+            )}
           </div>
 
           <div>
@@ -254,19 +275,21 @@ const FormIncident = ({change}) => {
               name="suivi_patient"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={(e) => change(e)}
+              defaultValue={notificationData.suivi_patient}
+
             >
               <option>{""}</option>
               <option value="suivi ambulatoire">Suivi ambulatoire</option>
               <option value="hospitalisation">Hospitalisation</option>
               <option value="référence">Référence</option>
             </select>
-            {/* {errors.email !== "" && (
+            {errors.suivi_patient  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
-                {errors.email}
+                {errors.suivi_patient}
               </Alert>
             </div>
-            )} */}
+            )}
           </div>
 
           <div>
@@ -281,6 +304,8 @@ const FormIncident = ({change}) => {
               name="evolution_situation_patient"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={(e) => change(e)}
+              defaultValue={notificationData.evolution_situation_patient}
+
             >
               <option>selectionner l'evolution</option>
               <option value="Favorable">Favorable</option>
@@ -293,13 +318,13 @@ const FormIncident = ({change}) => {
 
 
             </select>
-            {/* {errors.email !== "" && (
-              <div className="  my-2 text-sm font-medium  ">
-                <Alert color="failure" icon={Info}>
-                  {errors.email}
-                </Alert>
-              </div>
-            )} */}
+            {errors.evolution_situation_patient  && (
+            <div className="  my-2 text-sm font-medium  ">
+              <Alert color="failure" icon={Info}>
+                {errors.evolution_situation_patient}
+              </Alert>
+            </div>
+            )}
           </div>
 
           {/* <div>

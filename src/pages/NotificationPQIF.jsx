@@ -6,12 +6,141 @@ import FilterButton from "../components/DropdownFilter";
 import Datepicker from "../components/Datepicker";
 import { Step, Stepper, Typography } from "@material-tailwind/react";
 import { Button } from "flowbite-react";
+import {
+  CircleAlert,
+  MoveLeft,
+  MoveRight,
+  PillBottle,
+  User,
+} from "lucide-react";
+import FormConstatateurpqif from "../components/FormConstatateurpqif";
+
+import FormChoixPSPQIF from "../components/FormChoixPSPQIF";
+import FormIncidentPQIF from "../components/FormIncidentPQIF";
+
+import axios from "axios";
+
+import { useSelector, useDispatch } from "react-redux";
 
 const NotificationPQIF = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [isLastStep, setIsLastStep] = useState(false);
   const [isFirstStep, setIsFirstStep] = useState(false);
+
+  // const token = useSelector((state) => state.user.token);
+
+  const [notificationData, setNotificationData] = useState({
+    type_notification: "notification_pqif",
+    prenom_constatateur: "",
+    nom_constatateur: "",
+    adresse_constatateur: "",
+    tel_constatateur: "",
+    email_constatateur: "",
+    profession_constatateur: "",
+    lieu_travail_constatateur: "",
+
+    date_signalement_suspicion_pqif: "2024-09-15",
+
+    produit_sante_id: "",
+    provenance: "",
+    date_peremption: "",
+    numero_lot: "",
+
+    echantillon_conserve: null,
+    prenom_detenteur: "",
+    nom_detenteur: "",
+    tel_detenteur: "",
+    email_detenteur: "",
+
+    date_survenue_incident: "",
+    moment_detection_incident: "",
+    nature_incident: "",
+    circonstances_incident: "",
+    mesure_prise: "",
+
+    consequence_clinique: "",
+    description_evenement: "",
+    date_apparition_evenement: "",
+    date_disparition_evenement: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const change = (e) => {
+    // console.log(e.target.name,e.target.value);
+
+    setNotificationData((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  };
+
+  const notifier = () => {
+    // console.log('hello');
+
+    axios
+      .post("/api/notification", notificationData, {
+        headers: {
+          "Content-Type": "application/json",
+
+          Authorization: `Bearer ${"23|F0QqjgQ942K8ldhb06ezw8DbcoOcqhRkIQteIRbqd25870b3"}`,
+          // application/json;
+        },
+      })
+      .then(function (response) {
+        // setTraitement((value) => !value);
+        console.log(response);
+
+        if (response.statusText === "OK") {
+          // console.log(response.statusText==="OK");
+          // setOpenModal(true);
+
+          setNotificationData({
+            type_notification: "notification_pqif",
+            prenom_constatateur: "",
+            nom_constatateur: "",
+            adresse_constatateur: "",
+            tel_constatateur: "",
+            email_constatateur: "",
+            profession_constatateur: "",
+            lieu_travail_constatateur: "",
+
+            produit_sante_id: "",
+            provenance: "",
+            date_peremption: "",
+            numero_lot: "",
+
+            echantillon_conserve: null,
+            prenom_detenteur: "",
+            nom_detenteur : "",
+            tel_detenteur: "",
+            email_detenteur: "",
+
+            date_survenue_incident: "",
+            moment_detection_incident: "",
+            nature_incident: "",
+            circonstances_incident: "",
+            mesure_prise: "",
+
+            consequence_clinique: "",
+            description_evenement: "",
+            date_apparition_evenement: "",
+            date_disparition_evenement: "",
+          });
+
+          setActiveStep(0);
+        }
+
+        // setTimeout(() => {
+        //   navigate("/");
+        // }, 2500);
+      })
+      .catch(function (error) {
+        const responseErrors = error.response.data.errors;
+        setErrors(responseErrors)
+        // console.log(error);
+      });
+  };
 
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
@@ -68,7 +197,7 @@ const NotificationPQIF = () => {
                     isFirstStep={(value) => setIsFirstStep(value)}
                   >
                     <Step className="">
-                      {/* <UserRoundCog /> */}
+                      <User />
 
                       <div className="absolute -bottom-9 w-max text-center  ">
                         {/* <Badge placement="top-end"> */}
@@ -82,33 +211,22 @@ const NotificationPQIF = () => {
                       </div>
                     </Step>
                     <Step className="">
-                      {/* <User /> */}
+                      <PillBottle />
                       <div className="absolute -bottom-9 w-max text-center">
                         <Typography
                           variant="h6"
                           color={activeStep === 1 ? "light-blue" : "white"}
                         >
-                          Incident
-                        </Typography>
-                      </div>
-                    </Step>
-                    <Step className="">
-                      {/* <AtSign /> */}
-                      <div className="absolute -bottom-9 w-max text-center">
-                        <Typography
-                          variant="h6"
-                          color={activeStep === 2 ? "light-blue" : "white"}
-                        >
                           Produit de santé
                         </Typography>
                       </div>
                     </Step>
-                    <Step>
-                      {/* <BriefcaseBusiness /> */}
+                    <Step className="">
+                      <CircleAlert />
                       <div className="absolute -bottom-9 w-max text-center">
                         <Typography
                           variant="h6"
-                          color={activeStep === 3 ? "light-blue" : "white"}
+                          color={activeStep === 2 ? "light-blue" : "white"}
                         >
                           Incident
                         </Typography>
@@ -116,6 +234,32 @@ const NotificationPQIF = () => {
                     </Step>
                   </Stepper>
                 </div>
+
+                {activeStep === 0 && (
+                  <FormConstatateurpqif
+                    notificationData={notificationData}
+                    errors={errors}
+                    change={change}
+                  />
+                )}
+
+                {activeStep === 1 && (
+                  <FormChoixPSPQIF
+                    change={change}
+                    notificationData={notificationData}
+                    errors={errors}
+                    // setNotificationData={setNotificationData}
+                  />
+                )}
+
+                {activeStep === 2 && (
+                  <FormIncidentPQIF
+                    change={change}
+                    notificationData={notificationData}
+                    errors={errors}
+                    // setNotificationData={setNotificationData}
+                  />
+                )}
 
                 <div className="my-10 w-4/5 mx-auto  flex justify-between">
                   <Button
@@ -126,7 +270,7 @@ const NotificationPQIF = () => {
                   >
                     {/* {!traitement && <FilePen />} */}
 
-                    {/* <MoveLeft /> */}
+                    <MoveLeft />
                   </Button>
 
                   {isLastStep ? (
@@ -134,11 +278,11 @@ const NotificationPQIF = () => {
                       color="blue"
                       size="sm"
                       // isProcessing={traitement}
-                      onClick={(e) => submit(e)}
+                      onClick={() => notifier()}
                     >
                       {/* {!traitement && <FilePen />} */}
 
-                      <span className="ml-1">Creer</span>
+                      <span className="ml-1">Notifier</span>
                     </Button>
                   ) : (
                     <Button
@@ -147,13 +291,13 @@ const NotificationPQIF = () => {
                       // isProcessing={traitement}
                       onClick={handleNext}
                     >
-                      {/* <MoveRight /> */}
+                      <MoveRight />
                     </Button>
                   )}
                 </div>
               </section>
 
-              <section className=" w-full px-10 py-10 mx-auto rounded-xl bg-white dark:bg-gray-800 "></section>
+              {/* <section className=" w-full px-10 py-10 mx-auto rounded-xl bg-white dark:bg-gray-800 "></section> */}
             </div>
           </div>
         </main>

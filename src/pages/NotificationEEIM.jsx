@@ -6,9 +6,10 @@ import FilterButton from "../components/DropdownFilter";
 import Datepicker from "../components/Datepicker";
 import FormInfoPatient from "../components/FormInfoPatient";
 import { Step, Stepper, Typography } from "@material-tailwind/react";
-import { Button } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import {
   CircleAlert,
+  Info,
   MoveLeft,
   MoveRight,
   PillBottle,
@@ -16,9 +17,10 @@ import {
 } from "lucide-react";
 import axios from "axios";
 
-
 import FormIncident from "../components/FormIncident";
 import FormChoixPS from "../components/FormChoixPS";
+
+import { useSelector, useDispatch } from "react-redux";
 
 const NotificationEEIM = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -26,11 +28,20 @@ const NotificationEEIM = () => {
   const [isLastStep, setIsLastStep] = useState(false);
   const [isFirstStep, setIsFirstStep] = useState(false);
 
+  const [openModal, setOpenModal] = useState(false);
+  const [errors, setErrors] = useState({});
+
+ 
+
+
+
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
 
+  // const token = useSelector((state) => state.user.token);
+
   const [notificationData, setNotificationData] = useState({
-    type_notification: "notification_eeim",
+    type_notification: "notification_mapi",
     numero_dossier_patient: "",
     prenom_initiale: "",
     nom_initiale: "",
@@ -41,9 +52,9 @@ const NotificationEEIM = () => {
     antecedentsMedicaux_facteursRisques_facteursAssocies: "",
     patiente_enceinte: false,
     age_gestationnel: null,
-    readministration: false,
-    reapparition_apres_readministration: false,
-    traitement_correcteur: false,
+    readministration: null,
+    reapparition_apres_readministration: null,
+    traitement_correcteur: null,
     text_traitement_correcteur: null,
     suivi_patient: "",
     evolution_situation_patient: "",
@@ -58,6 +69,20 @@ const NotificationEEIM = () => {
   //   console.log(notificationData);
   // });
 
+  // useEffect(() => {
+  //   // console.log(notificationData.infos_produits_santes);
+  //   let arr= notificationData.infos_produits_santes.filter((produit)=>{
+
+  //     return produit.type_produit==="medicament"
+
+  //   })
+
+  //   console.log(arr);
+    
+
+
+  // });
+
   const change = (e) => {
     // console.log(e.target.name,e.target.value);
 
@@ -66,69 +91,64 @@ const NotificationEEIM = () => {
     });
   };
 
-  const notifier=()=>{
+  const notifier = () => {
     // console.log('hello');
 
     axios
-    .post("/api/notification", notificationData, {
-      headers: {
-        "Content-Type": "application/json",
+      .post("/api/notification", notificationData, {
+        headers: {
+          "Content-Type": "application/json",
+
+          Authorization: `Bearer ${"23|F0QqjgQ942K8ldhb06ezw8DbcoOcqhRkIQteIRbqd25870b3"}`,
+          // application/json;
+        },
+      })
+      .then(function (response) {
+        // setTraitement((value) => !value);
+
+        if (response.statusText === "OK") {
+          // console.log(response.statusText==="OK");
+          setOpenModal(true);
+
+          setNotificationData({
+            type_notification: "notification_eeim",
+            numero_dossier_patient: "",
+            prenom_initiale: "",
+            nom_initiale: "",
+            adresse_patient: "",
+            tel_patient: "",
+            date_naissance_patient: "",
+            sexe: "",
+            antecedentsMedicaux_facteursRisques_facteursAssocies: "",
+            patiente_enceinte: false,
+            age_gestationnel: null,
+            readministration: null,
+            reapparition_apres_readministration: null,
+            traitement_correcteur: null,
+            text_traitement_correcteur: null,
+            suivi_patient: "",
+            evolution_situation_patient: "",
+            description_evenement: "",
+            date_apparition_evenement: "",
+            date_disparition_evenement: "",
+            motif_prise_produits_sante: "",
+            infos_produits_santes: [],
+          });
+        }
+        setActiveStep(0);
+
+        // setTimeout(() => {
+        //   navigate("/");
+        // }, 2500);
+      })
+      .catch(function (error) {
         
-        Authorization:`Bearer ${"23|F0QqjgQ942K8ldhb06ezw8DbcoOcqhRkIQteIRbqd25870b3"}`
-        // application/json;
-      },
-    })
-    .then(function (response) {
+        const responseErrors = error.response.data.errors;
+        setErrors(responseErrors)
 
-      // setTraitement((value) => !value);
 
-      console.log(response);
-
-      // setTimeout(() => {
-      //   navigate("/");
-      // }, 2500);
-    })
-    .catch(function (error) {
-      console.log(error);
-      
-      // const responseErrors = error.response.data.errors;
-      // let newErrorMessage = {
-      //   role_utilisateur: "",
-      //   nom: "",
-      //   prenom: "",
-      //   sexe: "",
-      //   adresse: "",
-      //   telephone: "",
-      //   profession: "",
-      //   dateNaissance: "",
-      //   email: "",
-      //   password: "",
-      //   password_confirmation: "",
-      //   specilité: "",
-      //   Est_point_focal: 0,
-      //   district_localite: "",
-      //   adresse_structure_travail: "",
-      //   structure_travail: "",
-      //   files: "",
-      // };
-      // // console.log(responseErrors);
-
-      // for (const key in responseErrors) {
-      //   newErrorMessage = {
-      //     ...newErrorMessage,
-      //     [key]: responseErrors[key][0],
-      //   };
-      // }
-
-      // // console.log(newErrorMessage);
-      // setErros({
-      //   ...newErrorMessage,
-      // });
-      // setTraitement((value) => !value);
-    });
-    
-
-  }
+      });
+  };
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -220,13 +240,32 @@ const NotificationEEIM = () => {
                   </Stepper>
                 </div>
 
-                {activeStep === 0 && <FormInfoPatient change={change} />}
+                {activeStep === 0 && (
+                  <FormInfoPatient
+                    notificationData={notificationData}
+                    errors={errors}
+                    change={change}
+                  />
+                )}
 
-                {activeStep === 1 && <FormChoixPS change={change} notificationData={notificationData} setNotificationData={setNotificationData} />}
+                {activeStep === 1 && (
+                  <FormChoixPS
+                    change={change}
+                    notificationData={notificationData}
+                    errors={errors}
+                    setNotificationData={setNotificationData}
+                  />
+                )}
 
-                {/* <FormChoixPS /> */}
+                
 
-                {activeStep === 2 && <FormIncident change={change}/>}
+                {activeStep === 2 && (
+                  <FormIncident
+                    notificationData={notificationData}
+                    errors={errors}
+                    change={change}
+                  />
+                )}
 
                 {/*  */}
 
@@ -264,16 +303,45 @@ const NotificationEEIM = () => {
                     </Button>
                   )}
                 </div>
+
+                <Modal
+                  show={openModal}
+                  size="md"
+                  onClose={() => setOpenModal(false)}
+                  popup
+                >
+                  <Modal.Header />
+                  <Modal.Body>
+                    <div className="text-center">
+                      <Info className="mx-auto mb-4 h-14 w-14 " />
+                      <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                        Notification faite avec success
+                      </h3>
+                      {/* <div className="flex justify-center gap-4">
+                        <Button
+                          color="failure"
+                          onClick={() => setOpenModal(false)}
+                        >
+                          {"Yes, I'm sure"}
+                        </Button>
+                        <Button
+                          color="gray"
+                          onClick={() => setOpenModal(false)}
+                        >
+                          No, cancel
+                        </Button>
+                      </div> */}
+                    </div>
+                  </Modal.Body>
+                </Modal>
               </section>
 
-              {/* <section className=" w-full px-10 py-10 mx-auto rounded-xl bg-white dark:bg-gray-800 ">
-                  
-                </section> */}
+             
             </div>
           </div>
         </main>
 
-        {/* <Banner /> */}
+       
       </div>
     </div>
   );

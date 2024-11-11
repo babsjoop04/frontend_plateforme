@@ -21,6 +21,7 @@ import FormIncident from "../components/FormIncident";
 import FormChoixPS from "../components/FormChoixPS";
 
 import { useSelector, useDispatch } from "react-redux";
+import { useAuthProvider } from "../utils/AuthContext";
 
 const NotificationMAPI = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -31,7 +32,9 @@ const NotificationMAPI = () => {
   const [openModal, setOpenModal] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // const token = useSelector((state) => state.user.token);
+  // const token = useSelector((state) => state.user.token)|| "1|5eiXzIGElVxtC5kaBl7v028wpjqoiL9YpxR5TXVM8981959b";
+  const { currentUser, changeCurrentUser } = useAuthProvider();
+
 
 
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
@@ -96,7 +99,7 @@ const NotificationMAPI = () => {
         headers: {
           "Content-Type": "application/json",
 
-          Authorization: `Bearer ${"23|F0QqjgQ942K8ldhb06ezw8DbcoOcqhRkIQteIRbqd25870b3"}`,
+          Authorization: `Bearer ${currentUser.token}`,
           // application/json;
         },
       })

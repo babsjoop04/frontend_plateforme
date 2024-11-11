@@ -1,3 +1,4 @@
+import { useAuthProvider } from "../utils/AuthContext";
 import Dashboard from "./Dashboard";
 import LandingPage from "./LandingPage";
 import { useSelector } from "react-redux";
@@ -6,11 +7,13 @@ import { useSelector } from "react-redux";
 const PrivateHome = () => {
     // const bool = false
 
-    const token = useSelector(state => state.user.token)
+    // const token = useSelector(state => state.user.token)
+  const { currentUser, changeCurrentUser } = useAuthProvider();
+
 
 
     return (
-        token===null ?<LandingPage/> :<Dashboard/>
+        currentUser.token===null ?<LandingPage/> :<Dashboard/>
 
     );
 };

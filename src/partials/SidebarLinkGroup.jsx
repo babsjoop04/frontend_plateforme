@@ -1,4 +1,12 @@
-import { ChevronDown, ChevronUp, Pill, Send, UserCog } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  History,
+  Notebook,
+  Pill,
+  Send,
+  UserCog,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -18,9 +26,6 @@ const SidebarLinkGroup = ({
     setSidebarExpanded(true);
   };
 
-
-
-
   return (
     <li
       key={id}
@@ -38,24 +43,32 @@ const SidebarLinkGroup = ({
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <span className={` ${
-                          activecondition
-                            ? "text-violet-500"
-                            : "text-gray-400 dark:text-gray-500"
-                        }`}>
+            <span
+              className={` ${
+                activecondition
+                  ? "text-violet-500"
+                  : "text-gray-400 dark:text-gray-500"
+              }`}
+            >
               {/* {activecondition ? "text-violet-500" : "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"} */}
               {titre === "Utilisateurs" && <UserCog size={21} />}
-              {titre === "Notifier" && <Send size={21} />}
+              {(titre === "Notifier" || titre === "Notifications") && (
+                <Send size={21} />
+              )}
               {titre === "Produit de sante" && <Pill size={21} />}
+              {titre === "Traitements" && <Notebook size={21} />}
+              {titre === "Mes notifications" && <History size={21} />}
             </span>
             <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
               {titre}
             </span>
           </div>
           {/* Icon */}
-          <div className="flex shrink-0 ml-2 ">
-            {open ? <ChevronUp /> : <ChevronDown />}
-          </div>
+          {[...liste_sous_section].length !== 0 && (
+            <div className="flex shrink-0 ml-2 ">
+              {open ? <ChevronUp /> : <ChevronDown />}
+            </div>
+          )}
         </div>
       </span>
       <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
@@ -70,17 +83,18 @@ const SidebarLinkGroup = ({
                     "block transition duration-150  " +
                     //truncate
                     (isActive
-                    
                       ? "text-violet-500"
                       : "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200")
                   }
                 >
-                  <span className={`text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${
-                          isActive
-                            ? "text-violet-500"
-                            : "text-gray-400 dark:text-gray-500"
-                        }`}>
-                  {/* className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200" */}
+                  <span
+                    className={`text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${
+                      isActive
+                        ? "text-violet-500"
+                        : "text-gray-400 dark:text-gray-500"
+                    }`}
+                  >
+                    {/* className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200" */}
                     {titre}
                   </span>
                 </NavLink>

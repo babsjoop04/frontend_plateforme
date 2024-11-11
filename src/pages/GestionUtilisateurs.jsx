@@ -6,6 +6,7 @@ import FilterButton from "../components/DropdownFilter";
 import Datepicker from "../components/Datepicker";
 import { Button, Modal, Table } from "flowbite-react";
 import axios from "axios";
+import { useAuthProvider } from "../utils/AuthContext";
 
 const GestionUtilisateurs = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -20,14 +21,19 @@ const GestionUtilisateurs = () => {
   const [emailSelected, setEmailSelected] = useState("");
   const [statutCompte, setStatutCompte] = useState("");
 
+  const { currentUser, changeCurrentUser } = useAuthProvider();
+
+
   const getAccount = () => {
     axios
       .get(
         "/api/utilisateurs",
-        {},
+        
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${currentUser.token}`,
+
             // application/json;
           },
         }
@@ -159,6 +165,8 @@ const GestionUtilisateurs = () => {
                     <h2 className="font-semibold ">Consommateurs</h2>
                   </header>
                   <div className="p-3 overflow-x-auto ">
+                  {
+                    [...utilisateurs.consommateur].length!==0 && 
                     <Table hoverable>
                       <Table.Head>
                         <Table.HeadCell>Role</Table.HeadCell>
@@ -315,6 +323,7 @@ const GestionUtilisateurs = () => {
                         )}
                       </Table.Body>
                     </Table>
+                  }
                   </div>
                 </div>
               </section>
@@ -325,6 +334,8 @@ const GestionUtilisateurs = () => {
                     <h2 className="font-semibold ">Professionnels de la santé</h2>
                   </header>
                   <div className="p-3 overflow-x-auto ">
+                  {
+                    [...utilisateurs.professionnel_sante].length!==0 &&
                     <Table hoverable>
                       <Table.Head>
                         <Table.HeadCell>Role</Table.HeadCell>
@@ -481,6 +492,7 @@ const GestionUtilisateurs = () => {
                         )}
                       </Table.Body>
                     </Table>
+                  }
                   </div>
                 </div>
               </section>
@@ -491,6 +503,8 @@ const GestionUtilisateurs = () => {
                     <h2 className="font-semibold ">PRV exploitant</h2>
                   </header>
                   <div className="p-3 overflow-x-auto ">
+                  {
+                    [...utilisateurs.PRV_exploitant].length!==0 &&
                     <Table hoverable>
                       <Table.Head>
                         <Table.HeadCell>Role</Table.HeadCell>
@@ -647,6 +661,7 @@ const GestionUtilisateurs = () => {
                         )}
                       </Table.Body>
                     </Table>
+                  }
                   </div>
                 </div>
               </section>
@@ -657,6 +672,8 @@ const GestionUtilisateurs = () => {
                     <h2 className="font-semibold ">Responsable d'organisme de réglementation</h2>
                   </header>
                   <div className="p-3 overflow-x-auto ">
+                  {
+                    [...utilisateurs.responsable_organisme_reglementation].length!==0 &&
                     <Table hoverable>
                       <Table.Head>
                         <Table.HeadCell>Role</Table.HeadCell>
@@ -813,6 +830,7 @@ const GestionUtilisateurs = () => {
                         )}
                       </Table.Body>
                     </Table>
+                  }
                   </div>
                 </div>
               </section>

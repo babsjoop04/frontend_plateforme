@@ -10,6 +10,7 @@ import { Info } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { connection } from "@/redux/stateSlice/user/userSlice";
+import { useAuthProvider } from "../utils/AuthContext";
 
 const LoginPage = () => {
   const [identifiants, setIdentifiants] = useState({
@@ -28,7 +29,9 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const { currentUser, changeCurrentUser } = useAuthProvider();
+
 
   const change = (e) => {
     setIdentifiants({ ...identifiants, [e.target.name]: e.target.value });
@@ -53,14 +56,23 @@ const LoginPage = () => {
         .then(function (response) {
           setTraitement((value) => !value);
 
+          // console.log(response);
 
-          dispatch(
-            connection({
-              infos: response.data.user,
-              token: response.data.token,
-              // }
-            })
-          );
+          if (response.statusText==="OK") {
+
+            changeCurrentUser(response.data)
+            
+          }
+          
+
+
+          // dispatch(
+          //   connection({
+          //     infos: response.data.user,
+          //     token: response.data.token,
+          //     // }
+          //   })
+          // );
 
           // console.log(user);
 
@@ -71,19 +83,8 @@ const LoginPage = () => {
         .catch(function (error) {
           const responseErrors = error.response.data.errors;
 
-          let newErrorMessage = { 
-            email: "",
-            password: "",
-          };
 
-          for (const key in responseErrors) {
-            newErrorMessage = {
-              ...newErrorMessage,
-              [key]: responseErrors[key],
-            };
-          }
-
-          setErrors(newErrorMessage);
+          setErrors(responseErrors);
 
           setTraitement((value) => !value);
 
@@ -126,7 +127,7 @@ const LoginPage = () => {
                     required
                     onChange={(e) => change(e)}
                   />
-                  {errors.email !== "" && (
+                  {errors.email && (
                     <div className="  my-2 text-sm font-medium  ">
                       <Alert color="failure" icon={Info}>
                         {errors.email}
@@ -150,7 +151,7 @@ const LoginPage = () => {
                     required
                     onChange={(e) => change(e)}
                   />
-                  {errors.password !== "" && (
+                  {errors.password && (
                     <div className="  my-2 text-sm font-medium  ">
                       <Alert color="failure" icon={Info}>
                         {errors.password}

@@ -1,16 +1,89 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 import FilterButton from "../components/DropdownFilter";
 import Datepicker from "../components/Datepicker";
-import { Button, Card, Dropdown } from "flowbite-react";
+import { Button, Card, Carousel, Dropdown, List, Modal } from "flowbite-react";
 
 import imgDefaut from "@/images/defaut.png";
-import { Search } from "lucide-react";
+import {
+  Atom,
+  Badge,
+  BookOpenText,
+  Calendar1,
+  Download,
+  FlaskConical,
+  FolderPen,
+  HandCoins,
+  Key,
+  Pipette,
+  Plus,
+  Search,
+  Tablets,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+
+import axios from "axios";
+import { useAuthProvider } from "../utils/AuthContext";
 
 const Sinformer = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const [searchData, setSearchData] = useState({});
+  const [produits, setProduit] = useState([]);
+  const [produitSelectionne, setProduitSelectionne] = useState({});
+
+  const { currentUser, changeCurrentUser } = useAuthProvider();
+
+  // useEffect(() => {
+  //   console.log(produitSelectionne);
+  // });
+
+  const change = (e) => {
+    setSearchData((previousState) => {
+      return { ...previousState, [e.target.name]: e.target.value };
+    });
+  };
+
+  const selection = (id) => {
+    const produit = [...produits].find((produit) => {
+      return produit.id === id;
+    });
+    // console.log(produit);
+
+    setProduitSelectionne(produit);
+    setOpenModal(true);
+  };
+
+  const rechercher = () => {
+    // console.log('hello');
+
+    axios
+      .get("/api/produit/rechercher", {
+        params: searchData,
+        headers: {
+          Authorization: `Bearer ${currentUser.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then(function (response) {
+        if (response.statusText === "OK") {
+          // console.log(response.statusText==="OK");
+          // setOpenModal(true);
+
+          setProduit(response.data);
+        }
+
+        // setTimeout(() => {
+        //   navigate("/");
+        // }, 2500);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -62,20 +135,20 @@ const Sinformer = () => {
                 </p> */}
                 <div className="">
                   <label
-                    htmlFor="nom_produit_sante"
+                    htmlFor="nom_produit"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Nom du produit de sante
                   </label>
                   <input
                     type="text"
-                    id="nom_produit_sante"
-                    name="nom_produit_sante"
+                    id="nom_produit"
+                    name="nom_produit"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder=""
                     required
-                    // onChange={(e) => change(e)}
-                    // defaultValue={userData.prenom}
+                    onChange={(e) => change(e)}
+                    defaultValue={searchData.nom_produit_sante}
                   />
                   {/* {errors.prenom !== "" && (
             <div className="  my-2 text-sm font-medium  ">
@@ -86,87 +159,380 @@ const Sinformer = () => {
           )} */}
                 </div>
                 <div className="  mt-8 ">
-              <Button
-                color="blue"
-                size="sm"
-                // disabled={isFirstStep}
-                // onClick={handlePrev}
-              >
-
-                <Search className="mr-2" />
-                Rechercher
-              </Button>
-
-              
-            </div>
+                  <Button
+                    color="blue"
+                    size="sm"
+                    // disabled={isFirstStep}
+                    onClick={() => {
+                      rechercher();
+                    }}
+                  >
+                    <Search className="mr-2" />
+                    Rechercher
+                  </Button>
+                </div>
               </section>
 
-              <section className=" w-full px-10 py-10 mx-auto rounded-xl bg-white dark:bg-gray-800 ">
-                <Card className="max-w-sm">
-                  <div className="flex justify-end px-4 pt-4">
-                    {/* <Dropdown inline label="">
-                      <Dropdown.Item>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+              {[...produits].length !== 0 && (
+                <section className="grid grid-cols-3 gap-6 w-full px-10 py-10 mx-auto rounded-xl bg-white dark:bg-gray-800 ">
+                  {[...produits].map(
+                    ({ id, nom_produit, forme_galénique, conditionnement }) => {
+                      return (
+                        <Card
+                          key={id}
+                          className="max-w-sm  "
+                          renderImage={() => (
+                            <img
+                              // width={150}
+                              // height={15}
+                              // className="h-3/5"
+                              src={imgDefaut}
+                              alt="image 1"
+                            />
+                          )}
                         >
-                          Edit
-                        </a>
-                      </Dropdown.Item>
-                      <Dropdown.Item>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Export Data
-                        </a>
-                      </Dropdown.Item>
-                      <Dropdown.Item>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Delete
-                        </a>
-                      </Dropdown.Item>
-                    </Dropdown> */}
-                  </div>
-                  <div className="flex flex-col items-center pb-10">
-                    <img
-                      alt="Bonnie image"
-                      // height="96"
-                      src={imgDefaut}
-                      width="96"
-                      className="mb-3 rounded-full shadow-lg"
-                    />
-                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-                      Bonnie Green
-                    </h5>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      Visual Designer
-                    </span>
-                    <div className="mt-4 flex space-x-3 lg:mt-6">
-                      <a
-                        href="#"
-                        className="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
-                      >
-                        Add friend
-                      </a>
-                      <a
-                        href="#"
-                        className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-                      >
-                        Message
-                      </a>
-                    </div>
-                  </div>
-                </Card>
-              </section>
+                          <h5 className="text-2xl  font-bold tracking-tight text-gray-900 dark:text-white">
+                            {nom_produit}
+                          </h5>
+
+                          <span className=" text-xl font-medium  text-gray-700 dark:text-gray-400">
+                            <List>
+                              <List.Item>{forme_galénique}</List.Item>
+                              <List.Item>{conditionnement}</List.Item>
+                            </List>
+                          </span>
+                          <div className="mt-4  ">
+                            <Button
+                              color="blue"
+                              // onClick={() => setOpenModal(id)}
+                              onClick={() => selection(id)}
+                            >
+                              Voir plus
+                              <Plus className="ml-2" />
+                            </Button>
+                          </div>
+                        </Card>
+                      );
+                    }
+                  )}
+                </section>
+              )}
             </div>
           </div>
         </main>
 
-        {/* <Banner /> */}
+        <Modal
+          show={openModal}
+          size="max-w-lg"
+          // position={modalPlacement}
+          onClose={() => {
+            setOpenModal(false);
+            setProduitSelectionne({});
+          }}
+        >
+          <Modal.Header>Informations</Modal.Header>
+          <Modal.Body>
+            {/* <div className="space-y-6 p-6">
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                With less than a month to go before the European Union enacts
+                new consumer privacy laws for its citizens, companies around the
+                world are updating their terms of service agreements to comply.
+              </p>
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                The European Union’s General Data Protection Regulation
+                (G.D.P.R.) goes into effect on May 25 and is meant to ensure a
+                common set of data rights in the European Union. It requires
+                organizations to notify users as soon as possible of high-risk
+                data breaches that could personally affect them.
+              </p>
+            </div>
+            <div className="space-y-6 p-6">
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                With less than a month to go before the European Union enacts
+                new consumer privacy laws for its citizens, companies around the
+                world are updating their terms of service agreements to comply.
+              </p>
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                The European Union’s General Data Protection Regulation
+                (G.D.P.R.) goes into effect on May 25 and is meant to ensure a
+                common set of data rights in the European Union. It requires
+                organizations to notify users as soon as possible of high-risk
+                data breaches that could personally affect them.
+              </p>
+            </div><div className="space-y-6 p-6">
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                With less than a month to go before the European Union enacts
+                new consumer privacy laws for its citizens, companies around the
+                world are updating their terms of service agreements to comply.
+              </p>
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                The European Union’s General Data Protection Regulation
+                (G.D.P.R.) goes into effect on May 25 and is meant to ensure a
+                common set of data rights in the European Union. It requires
+                organizations to notify users as soon as possible of high-risk
+                data breaches that could personally affect them.
+              </p>
+            </div> */}
+
+            <div className=" py-8">
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col md:flex-row -mx-4">
+                  <div className="md:flex-1 px-4">
+                    <div className="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
+                      {/* <img
+                        className="w-full h-full object-cover"
+                        src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
+                        alt="Product Image"
+                      /> */}
+                      <Carousel>
+                        <img
+                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
+                          alt="..."
+                        />
+                        <img
+                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
+                          alt="..."
+                        />
+                        <img
+                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
+                          alt="..."
+                        />
+                        <img
+                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
+                          alt="..."
+                        />
+                        <img
+                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
+                          alt="..."
+                        />
+                      </Carousel>
+                    </div>
+                    <div className="flex -mx-2 mb-4">
+                      {/* <div className="w-1/2 px-2">
+                        <button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
+                          Add to Cart
+                        </button>
+                      </div>
+                      <div className="w-1/2 px-2">
+                        <button className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
+                          Add to Wishlist
+                        </button>
+                      </div> */}
+                    </div>
+                  </div>
+                  <div className="md:flex-1 px-4 ">
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                      {produitSelectionne.nom_produit}
+                    </h2>
+
+                    <div className="flex items-center my-3">
+                      <span className="mr-2 text-violet-500">
+                        <Key size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Numero d'amm :
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {produitSelectionne.numero_AMM}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center my-3">
+                      <span className="mr-2 text-violet-500">
+                        <HandCoins size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Prix public :
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {produitSelectionne.prix_public}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center my-3">
+                      <span className="mr-2 text-violet-500">
+                        <Calendar1 size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Date de début :
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {produitSelectionne.date_début}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center my-3">
+                      <span className="mr-2 text-violet-500">
+                        <FolderPen size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Denomination commune internationale :
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {produitSelectionne.DCI}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center my-3">
+                      <span className="mr-2 text-violet-500">
+                        <Pipette size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Dosage :
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {produitSelectionne.dosage}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center my-3">
+                      <span className="mr-2 text-violet-500">
+                        <Atom size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Forme galénique :
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {produitSelectionne.forme_galénique}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center my-3">
+                      <span className="mr-2 text-violet-500">
+                        <FlaskConical size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Laboratoire :
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {produitSelectionne.laboratoire}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center ">
+                      <span className="mr-2 text-violet-500">
+                        <Tablets size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Voie d'administration :
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {produitSelectionne.voie_administration}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center my-3">
+                      <span className="mr-2 text-violet-500">
+                        <Tablets size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Classe thérapeutique :
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {produitSelectionne.classe_thérapeutique}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center my-3">
+                      {/* <span className="mr-2 text-violet-500">
+                        <Download size={21} />
+                      </span>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Notice :
+                      </span> */}
+                      {/* <span className="text-gray-600 dark:text-gray-300">
+                        <Link
+                          // to={"/signup"}
+                          className="hover:underline decoration-indigo-600"
+                        >
+                          Telecharger
+                          <Button
+                            color="blue"
+                            onClick={() => setOpenModal(false)}
+                          >
+                        <Download size={21} />
+
+                            Telecharger la notice
+                          </Button>
+                        </Link>
+                      </span> */}
+                    </div>
+
+                    <div className="mb-4">
+                      {/* <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Select Color:
+                      </span> */}
+                      {/* <div className="flex items-center mt-2">
+                        <span className="text-gray-600 dark:text-gray-300"> */}
+                      <Link
+                        // to={"/signup"}
+                        className=""
+                      >
+                        {/* Telecharger */}
+                        <Button
+                          color="blue"
+                          onClick={() => setOpenModal(false)}
+                        >
+                          <Download size={21} className="mr-2" />
+
+                          <span className="font-bold ">
+                            Telecharger la notice
+                          </span>
+                        </Button>
+                      </Link>
+                      {/* </span>
+                      </div> */}
+                    </div>
+                    {/* <div className="mb-4">
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Select Size:
+                      </span>
+                      <div className="flex items-center mt-2">
+                        <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">
+                          S
+                        </button>
+                        <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">
+                          M
+                        </button>
+                        <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">
+                          L
+                        </button>
+                        <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">
+                          XL
+                        </button>
+                        <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">
+                          XXL
+                        </button>
+                      </div>
+                    </div> */}
+                    {/* <div>
+                      <span className="font-bold text-gray-700 dark:text-gray-300">
+                        Product Description:
+                      </span>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Sed sed ante justo. Integer euismod libero id mauris
+                        malesuada tincidunt. Vivamus commodo nulla ut lorem
+                        rhoncus aliquet. Duis dapibus augue vel ipsum pretium,
+                        et venenatis sem blandit. Quisque ut erat vitae nisi
+                        ultrices placerat non eget velit. Integer ornare mi sed
+                        ipsum lacinia, non sagittis mauris blandit. Morbi
+                        fermentum libero vel nisl suscipit, nec tincidunt mi
+                        consectetur.
+                      </p>
+                    </div> */}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+          {/* <Modal.Footer>
+            <Button onClick={() => setOpenModal(false)}>I accept</Button>
+            <Button color="gray" onClick={() => setOpenModal(false)}>
+              Decline
+            </Button>
+          </Modal.Footer> */}
+        </Modal>
       </div>
     </div>
   );

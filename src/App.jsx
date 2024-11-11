@@ -22,14 +22,7 @@ import AjoutProduits from "./pages/AjoutProduits";
 import NotificationEEIM from "./pages/NotificationEEIM";
 import NotificationPQIF from "./pages/NotificationPQIF";
 import NotificationMAPI from "./pages/NotificationMAPI";
-
-
-
-
-
-
-
-
+import HistoriqueNotifications from "./pages/HistoriqueNotifications";
 
 function App() {
   const location = useLocation();
@@ -43,25 +36,25 @@ function App() {
   return (
     <>
       <Routes>
-        {/* <Route index  element={<PrivateHome />} /> */}
-        <Route index  element={<Dashboard />} />
+        <Route index element={<PrivateHome />} />
+        {/* <Route index  element={<Dashboard />} /> */}
         {/* <Route index  element={<Home />} /> */}
-        <Route  path="/sinformer"  element={<Sinformer />} />
-        <Route  path="/utilisateurs/gestion"  element={<GestionUtilisateurs />} />
-        <Route  path="/utilisateurs/demandes"  element={<DemandeInscription />} />
-        <Route  path="/produits/gestion"  element={<GestionProduits />} />
-        <Route  path="/produits/ajout"  element={<AjoutProduits />} />
+        <Route path="/sinformer" element={<Sinformer />} />
+        <Route path="/utilisateurs/gestion" element={<GestionUtilisateurs />} />
+        <Route path="/utilisateurs/demandes" element={<DemandeInscription />} />
+        <Route path="/produits/gestion" element={<GestionProduits />} />
+        <Route path="/produits/ajout" element={<AjoutProduits />} />
 
-        <Route  path="/notification/eeim"  element={<NotificationEEIM />} />
-        <Route  path="/notification/mapi"  element={<NotificationMAPI />} />
-        <Route  path="/notification/pqif"  element={<NotificationPQIF />} />
+        <Route path="/notification/eeim" element={<NotificationEEIM />} />
+        <Route path="/notification/mapi" element={<NotificationMAPI />} />
+        <Route path="/notification/pqif" element={<NotificationPQIF />} />
 
-
-
-
-
-
-
+        <Route
+          path="/notifications/historique"
+          element={
+            <HistoriqueNotifications  />
+          }
+        />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />

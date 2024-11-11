@@ -21,6 +21,7 @@ import FormIncidentPQIF from "../components/FormIncidentPQIF";
 import axios from "axios";
 
 import { useSelector, useDispatch } from "react-redux";
+import { useAuthProvider } from "../utils/AuthContext";
 
 const NotificationPQIF = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -29,6 +30,8 @@ const NotificationPQIF = () => {
   const [isFirstStep, setIsFirstStep] = useState(false);
 
   // const token = useSelector((state) => state.user.token);
+  const { currentUser, changeCurrentUser } = useAuthProvider();
+
 
   const [notificationData, setNotificationData] = useState({
     type_notification: "notification_pqif",
@@ -83,7 +86,7 @@ const NotificationPQIF = () => {
         headers: {
           "Content-Type": "application/json",
 
-          Authorization: `Bearer ${"23|F0QqjgQ942K8ldhb06ezw8DbcoOcqhRkIQteIRbqd25870b3"}`,
+          Authorization: `Bearer ${currentUser.token}`,
           // application/json;
         },
       })

@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Button, Spinner } from "flowbite-react";
 import { deconnection } from "@/redux/stateSlice/user/userSlice";
+import { useAuthProvider } from "../utils/AuthContext";
 
 // import { Spinner } from "@material-tailwind/react";
 
@@ -19,16 +20,21 @@ function DropdownProfile({ align }) {
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
-  const nom = useSelector((state) => state.user.infos.nom);
-  const prenom = useSelector((state) => state.user.infos.prenom);
-  const role_utilisateur = useSelector(
-    (state) => state.user.infos.role_utilisateur
-  );
-  const token = useSelector((state) => state.user.token);
-  const dispatch = useDispatch();
+  // const nom = useSelector((state) => state.user.infos.nom);
+  // const prenom = useSelector((state) => state.user.infos.prenom);
+  // const role_utilisateur = useSelector(
+  //   (state) => state.user.infos.role_utilisateur
+  // );
+  // const token = useSelector((state) => state.user.token);
+
+  const { currentUser, changeCurrentUser } = useAuthProvider();
+
+  // const dispatch = useDispatch();
  const navigate=useNavigate()
 
+
   const logout = () => {
+
     setTraitement((value) => !value);
 
 
@@ -42,24 +48,43 @@ function DropdownProfile({ align }) {
     .post("/api/logout",{}, {
       headers: {
         "Content-Type": "application/json",
-        Authorization:`Bearer ${token}`
+        Authorization:`Bearer ${currentUser.token}`
         // application/json multipart/form-data;
       },
     })
     .then(function (response) {
 
-      dispatch(
-        deconnection()
-      );
+      if (response.statusText==="OK") {
+        // console.log(currentUser.token);
+        
+        changeCurrentUser({
+          token: null,
+          role_utilisateur: null,
+          prenom: null,
+          nom: null,
+        })
 
-      console.log(response);
+        // deconnexion()
 
-      // setTimeout(() => {
+      }
+
+      // dispatch(
+      //   deconnection()
+      // );
+
+
+
+
+      // console.log(response);
+
+      setTimeout(() => {
         navigate("/");
-      // }, 1500);
+      }, 1500);
     })
     .catch(function (error) {
       console.log(error);
+      // console.log(currentUser.token);
+
 
     })
 
@@ -134,10 +159,10 @@ function DropdownProfile({ align }) {
         >
           <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-gray-200 dark:border-gray-700/60">
             <div className="font-medium text-gray-800 dark:text-gray-100">
-              {prenom} {nom}
+              {currentUser.prenom} {currentUser.nom}
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 italic">
-              {role_utilisateur}
+              {currentUser.role_utilisateur}
             </div>
           </div>
           <ul>

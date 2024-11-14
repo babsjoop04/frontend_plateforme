@@ -23,12 +23,11 @@ const GestionUtilisateurs = () => {
 
   const { currentUser, changeCurrentUser } = useAuthProvider();
 
-
   const getAccount = () => {
     axios
       .get(
         "/api/utilisateurs",
-        
+
         {
           headers: {
             "Content-Type": "application/json",
@@ -66,10 +65,12 @@ const GestionUtilisateurs = () => {
     // axios
     //   .get(
     //     "/api/utilisateurs",
-    //     {},
+
     //     {
     //       headers: {
     //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${currentUser.token}`,
+
     //         // application/json;
     //       },
     //     }
@@ -77,12 +78,25 @@ const GestionUtilisateurs = () => {
     //   .then(function (response) {
     //     // console.log(response.data);
 
-    //     setUtilisateurs(response.data);
+    //     let newUtilisateurs = {
+    //       consommateur: [],
+    //       professionnel_sante: [],
+    //       responsable_organisme_reglementation: [],
+    //       PRV_exploitant: [],
+    //     };
+
+    //     for (const key in response.data) {
+    //       // console.log(key);
+    //       newUtilisateurs[key] = response.data[key];
+    //     }
+
+    //     // console.log(newUtilisateurs);
+
+    //     setUtilisateurs(newUtilisateurs);
     //   })
     //   .catch(function (error) {
     //     console.log(error);
     //   });
-
     getAccount();
   }, []);
 
@@ -165,165 +179,171 @@ const GestionUtilisateurs = () => {
                     <h2 className="font-semibold ">Consommateurs</h2>
                   </header>
                   <div className="p-3 overflow-x-auto ">
-                  {
-                    [...utilisateurs.consommateur].length!==0 && 
-                    <Table hoverable>
-                      <Table.Head>
-                        <Table.HeadCell>Role</Table.HeadCell>
-                        <Table.HeadCell>Status</Table.HeadCell>
+                    {[...utilisateurs.consommateur].length !== 0 ? (
+                      <Table hoverable>
+                        <Table.Head>
+                          <Table.HeadCell>Role</Table.HeadCell>
+                          <Table.HeadCell>Status</Table.HeadCell>
 
-                        <Table.HeadCell>Nom</Table.HeadCell>
-                        <Table.HeadCell>prenom</Table.HeadCell>
-                        <Table.HeadCell>sexe</Table.HeadCell>
-                        <Table.HeadCell>adresse</Table.HeadCell>
-                        <Table.HeadCell>telephone</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Date de naissance
-                        </Table.HeadCell>
-                        <Table.HeadCell>profession</Table.HeadCell>
+                          <Table.HeadCell>Nom</Table.HeadCell>
+                          <Table.HeadCell>prenom</Table.HeadCell>
+                          <Table.HeadCell>sexe</Table.HeadCell>
+                          <Table.HeadCell>adresse</Table.HeadCell>
+                          <Table.HeadCell>telephone</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Date de naissance
+                          </Table.HeadCell>
+                          <Table.HeadCell>profession</Table.HeadCell>
 
-                        <Table.HeadCell>Email</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
-                      </Table.Head>
-                      <Table.Body className="divide-y">
-                        {[...utilisateurs.consommateur].map(
-                          ({
-                            id,
-                            role_utilisateur,
-                            statut,
-                            nom,
-                            prenom,
-                            sexe,
-                            adresse,
-                            telephone,
-                            dateNaissance,
-                            profession,
+                          <Table.HeadCell>Email</Table.HeadCell>
+                          <Table.HeadCell>Actions</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                          {[...utilisateurs.consommateur].map(
+                            ({
+                              id,
+                              role_utilisateur,
+                              statut,
+                              nom,
+                              prenom,
+                              sexe,
+                              adresse,
+                              telephone,
+                              dateNaissance,
+                              profession,
 
-                            email,
-                          }) => {
-                            return (
-                              <Table.Row
-                                key={id}
-                                className=" dark:border-gray-700 "
-                              >
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {role_utilisateur}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {statut}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {nom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {prenom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {sexe}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {telephone}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {dateNaissance}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {profession}
-                                </Table.Cell>
+                              email,
+                            }) => {
+                              return (
+                                <Table.Row
+                                  key={id}
+                                  className=" dark:border-gray-700 "
+                                >
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {role_utilisateur}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {statut}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {nom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {prenom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {sexe}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {telephone}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {dateNaissance}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {profession}
+                                  </Table.Cell>
 
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {email}
-                                </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {email}
+                                  </Table.Cell>
 
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  <Button
-                                    onClick={() => {
-                                      // gestionCompte(email,"desactivation_compte")
-                                      setOpenModal(true);
-                                      setEmailSelected(email);
-                                      setStatutCompte(statut);
-                                    }}
-                                    color={
-                                      statut === "activé" ? "failure" : "blue"
-                                    }
-                                  >
-                                    {statut === "activé"
-                                      ? "désactiver"
-                                      : "activer"}
-                                  </Button>
-                                  <Modal
-                                    key={id}
-                                    show={openModal}
-                                    onClose={() => setOpenModal(false)}
-                                  >
-                                    <Modal.Header>Avertissement</Modal.Header>
-                                    <Modal.Body>
-                                      <div className="space-y-6">
-                                        <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                          Vous êtes sur le point de désactiver
-                                          le compte de cet utilisateur.
-                                          L'utilisateur ne pourra plus se
-                                          connecter à son compte et ses accès
-                                          aux services seront immédiatement
-                                          suspendus Les données du compte seront
-                                          conservées conformément à notre
-                                          politique de rétention et un email de
-                                          notification sera automatiquement
-                                          envoyé à l'utilisateur. Cette action
-                                          peut être annulée ultérieurement et
-                                          toutes les sessions actives de
-                                          l'utilisateur seront déconnectées
-                                        </p>
-                                      </div>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                      {statutCompte === "activé" ? (
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    <Button
+                                      onClick={() => {
+                                        // gestionCompte(email,"desactivation_compte")
+                                        setOpenModal(true);
+                                        setEmailSelected(email);
+                                        setStatutCompte(statut);
+                                      }}
+                                      color={
+                                        statut === "activé" ? "failure" : "blue"
+                                      }
+                                    >
+                                      {statut === "activé"
+                                        ? "désactiver"
+                                        : "activer"}
+                                    </Button>
+                                    <Modal
+                                      key={id}
+                                      show={openModal}
+                                      onClose={() => setOpenModal(false)}
+                                    >
+                                      <Modal.Header>Avertissement</Modal.Header>
+                                      <Modal.Body>
+                                        <div className="space-y-6">
+                                          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                            Vous êtes sur le point de désactiver
+                                            le compte de cet utilisateur.
+                                            L'utilisateur ne pourra plus se
+                                            connecter à son compte et ses accès
+                                            aux services seront immédiatement
+                                            suspendus Les données du compte
+                                            seront conservées conformément à
+                                            notre politique de rétention et un
+                                            email de notification sera
+                                            automatiquement envoyé à
+                                            l'utilisateur. Cette action peut
+                                            être annulée ultérieurement et
+                                            toutes les sessions actives de
+                                            l'utilisateur seront déconnectées
+                                          </p>
+                                        </div>
+                                      </Modal.Body>
+                                      <Modal.Footer>
+                                        {statutCompte === "activé" ? (
+                                          <Button
+                                            onClick={() =>
+                                              // setOpenModal(false)
+
+                                              gestionCompte(
+                                                "desactivation_compte"
+                                              )
+                                            }
+                                            color="failure"
+                                          >
+                                            désactiver
+                                          </Button>
+                                        ) : (
+                                          <Button
+                                            onClick={() =>
+                                              gestionCompte(
+                                                "reactivation_compte"
+                                              )
+                                            }
+                                            color="blue"
+                                          >
+                                            activer
+                                          </Button>
+                                        )}
+
                                         <Button
-                                          onClick={() =>
-                                            // setOpenModal(false)
-
-                                            gestionCompte(
-                                              "desactivation_compte"
-                                            )
-                                          }
-                                          color="failure"
+                                          color="gray"
+                                          onClick={() => {
+                                            setOpenModal(false);
+                                            setEmailSelected("");
+                                            setStatutCompte("");
+                                          }}
                                         >
-                                          désactiver
+                                          Annuler
                                         </Button>
-                                      ) : (
-                                        <Button
-                                          onClick={() =>
-                                            gestionCompte("reactivation_compte")
-                                          }
-                                          color="blue"
-                                        >
-                                          activer
-                                        </Button>
-                                      )}
-
-                                      <Button
-                                        color="gray"
-                                        onClick={() => {
-                                          setOpenModal(false);
-                                          setEmailSelected("");
-                                          setStatutCompte("");
-                                        }}
-                                      >
-                                        Annuler
-                                      </Button>
-                                    </Modal.Footer>
-                                  </Modal>
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          }
-                        )}
-                      </Table.Body>
-                    </Table>
-                  }
+                                      </Modal.Footer>
+                                    </Modal>
+                                  </Table.Cell>
+                                </Table.Row>
+                              );
+                            }
+                          )}
+                        </Table.Body>
+                      </Table>
+                    ) : (
+                      <p className=" text-xl my-4">
+                        Aucun compte de consommateur n'a été enregistré
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -331,168 +351,177 @@ const GestionUtilisateurs = () => {
               <section className="grid grid-cols-3 gap-6  w-full px-10 py-10 mx-auto bg-white dark:bg-gray-800   rounded-xl">
                 <div className="col-span-full xl:col-span-6  shadow-sm rounded-xl">
                   <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-                    <h2 className="font-semibold ">Professionnels de la santé</h2>
+                    <h2 className="font-semibold ">
+                      Professionnels de la santé
+                    </h2>
                   </header>
                   <div className="p-3 overflow-x-auto ">
-                  {
-                    [...utilisateurs.professionnel_sante].length!==0 &&
-                    <Table hoverable>
-                      <Table.Head>
-                        <Table.HeadCell>Role</Table.HeadCell>
-                        <Table.HeadCell>Status</Table.HeadCell>
+                    {[...utilisateurs.professionnel_sante].length !== 0 ? (
+                      <Table hoverable>
+                        <Table.Head>
+                          <Table.HeadCell>Role</Table.HeadCell>
+                          <Table.HeadCell>Status</Table.HeadCell>
 
-                        <Table.HeadCell>Nom</Table.HeadCell>
-                        <Table.HeadCell>prenom</Table.HeadCell>
-                        <Table.HeadCell>sexe</Table.HeadCell>
-                        <Table.HeadCell>adresse</Table.HeadCell>
-                        <Table.HeadCell>telephone</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Date de naissance
-                        </Table.HeadCell>
-                        <Table.HeadCell>profession</Table.HeadCell>
+                          <Table.HeadCell>Nom</Table.HeadCell>
+                          <Table.HeadCell>prenom</Table.HeadCell>
+                          <Table.HeadCell>sexe</Table.HeadCell>
+                          <Table.HeadCell>adresse</Table.HeadCell>
+                          <Table.HeadCell>telephone</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Date de naissance
+                          </Table.HeadCell>
+                          <Table.HeadCell>profession</Table.HeadCell>
 
-                        <Table.HeadCell>Email</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
-                      </Table.Head>
-                      <Table.Body className="divide-y">
-                        {[...utilisateurs.professionnel_sante].map(
-                          ({
-                            id,
-                            role_utilisateur,
-                            statut,
-                            nom,
-                            prenom,
-                            sexe,
-                            adresse,
-                            telephone,
-                            dateNaissance,
-                            profession,
+                          <Table.HeadCell>Email</Table.HeadCell>
+                          <Table.HeadCell>Actions</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                          {[...utilisateurs.professionnel_sante].map(
+                            ({
+                              id,
+                              role_utilisateur,
+                              statut,
+                              nom,
+                              prenom,
+                              sexe,
+                              adresse,
+                              telephone,
+                              dateNaissance,
+                              profession,
 
-                            email,
-                          }) => {
-                            return (
-                              <Table.Row
-                                key={id}
-                                className=" dark:border-gray-700 "
-                              >
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {role_utilisateur}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {statut}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {nom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {prenom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {sexe}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {telephone}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {dateNaissance}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {profession}
-                                </Table.Cell>
+                              email,
+                            }) => {
+                              return (
+                                <Table.Row
+                                  key={id}
+                                  className=" dark:border-gray-700 "
+                                >
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {role_utilisateur}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {statut}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {nom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {prenom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {sexe}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {telephone}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {dateNaissance}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {profession}
+                                  </Table.Cell>
 
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {email}
-                                </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {email}
+                                  </Table.Cell>
 
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  <Button
-                                    onClick={() => {
-                                      // gestionCompte(email,"desactivation_compte")
-                                      setOpenModal(true);
-                                      setEmailSelected(email);
-                                      setStatutCompte(statut);
-                                    }}
-                                    color={
-                                      statut === "activé" ? "failure" : "blue"
-                                    }
-                                  >
-                                    {statut === "activé"
-                                      ? "désactiver"
-                                      : "activer"}
-                                  </Button>
-                                  <Modal
-                                    key={id}
-                                    show={openModal}
-                                    onClose={() => setOpenModal(false)}
-                                  >
-                                    <Modal.Header>Avertissement</Modal.Header>
-                                    <Modal.Body>
-                                      <div className="space-y-6">
-                                        <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                          Vous êtes sur le point de désactiver
-                                          le compte de cet utilisateur.
-                                          L'utilisateur ne pourra plus se
-                                          connecter à son compte et ses accès
-                                          aux services seront immédiatement
-                                          suspendus Les données du compte seront
-                                          conservées conformément à notre
-                                          politique de rétention et un email de
-                                          notification sera automatiquement
-                                          envoyé à l'utilisateur. Cette action
-                                          peut être annulée ultérieurement et
-                                          toutes les sessions actives de
-                                          l'utilisateur seront déconnectées
-                                        </p>
-                                      </div>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                      {statutCompte === "activé" ? (
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    <Button
+                                      onClick={() => {
+                                        // gestionCompte(email,"desactivation_compte")
+                                        setOpenModal(true);
+                                        setEmailSelected(email);
+                                        setStatutCompte(statut);
+                                      }}
+                                      color={
+                                        statut === "activé" ? "failure" : "blue"
+                                      }
+                                    >
+                                      {statut === "activé"
+                                        ? "désactiver"
+                                        : "activer"}
+                                    </Button>
+                                    <Modal
+                                      key={id}
+                                      show={openModal}
+                                      onClose={() => setOpenModal(false)}
+                                    >
+                                      <Modal.Header>Avertissement</Modal.Header>
+                                      <Modal.Body>
+                                        <div className="space-y-6">
+                                          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                            Vous êtes sur le point de désactiver
+                                            le compte de cet utilisateur.
+                                            L'utilisateur ne pourra plus se
+                                            connecter à son compte et ses accès
+                                            aux services seront immédiatement
+                                            suspendus Les données du compte
+                                            seront conservées conformément à
+                                            notre politique de rétention et un
+                                            email de notification sera
+                                            automatiquement envoyé à
+                                            l'utilisateur. Cette action peut
+                                            être annulée ultérieurement et
+                                            toutes les sessions actives de
+                                            l'utilisateur seront déconnectées
+                                          </p>
+                                        </div>
+                                      </Modal.Body>
+                                      <Modal.Footer>
+                                        {statutCompte === "activé" ? (
+                                          <Button
+                                            onClick={() =>
+                                              // setOpenModal(false)
+
+                                              gestionCompte(
+                                                "desactivation_compte"
+                                              )
+                                            }
+                                            color="failure"
+                                          >
+                                            désactiver
+                                          </Button>
+                                        ) : (
+                                          <Button
+                                            onClick={() =>
+                                              gestionCompte(
+                                                "reactivation_compte"
+                                              )
+                                            }
+                                            color="blue"
+                                          >
+                                            activer
+                                          </Button>
+                                        )}
+
                                         <Button
-                                          onClick={() =>
-                                            // setOpenModal(false)
-
-                                            gestionCompte(
-                                              "desactivation_compte"
-                                            )
-                                          }
-                                          color="failure"
+                                          color="gray"
+                                          onClick={() => {
+                                            setOpenModal(false);
+                                            setEmailSelected("");
+                                            setStatutCompte("");
+                                          }}
                                         >
-                                          désactiver
+                                          Annuler
                                         </Button>
-                                      ) : (
-                                        <Button
-                                          onClick={() =>
-                                            gestionCompte("reactivation_compte")
-                                          }
-                                          color="blue"
-                                        >
-                                          activer
-                                        </Button>
-                                      )}
-
-                                      <Button
-                                        color="gray"
-                                        onClick={() => {
-                                          setOpenModal(false);
-                                          setEmailSelected("");
-                                          setStatutCompte("");
-                                        }}
-                                      >
-                                        Annuler
-                                      </Button>
-                                    </Modal.Footer>
-                                  </Modal>
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          }
-                        )}
-                      </Table.Body>
-                    </Table>
-                  }
+                                      </Modal.Footer>
+                                    </Modal>
+                                  </Table.Cell>
+                                </Table.Row>
+                              );
+                            }
+                          )}
+                        </Table.Body>
+                      </Table>
+                    ) : (
+                      <p className=" text-xl my-4">
+                        Aucun compte de professionnels de la santé n'a été
+                        enregistré
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -503,165 +532,172 @@ const GestionUtilisateurs = () => {
                     <h2 className="font-semibold ">PRV exploitant</h2>
                   </header>
                   <div className="p-3 overflow-x-auto ">
-                  {
-                    [...utilisateurs.PRV_exploitant].length!==0 &&
-                    <Table hoverable>
-                      <Table.Head>
-                        <Table.HeadCell>Role</Table.HeadCell>
-                        <Table.HeadCell>Status</Table.HeadCell>
+                    {[...utilisateurs.PRV_exploitant].length !== 0 ? (
+                      <Table hoverable>
+                        <Table.Head>
+                          <Table.HeadCell>Role</Table.HeadCell>
+                          <Table.HeadCell>Status</Table.HeadCell>
 
-                        <Table.HeadCell>Nom</Table.HeadCell>
-                        <Table.HeadCell>prenom</Table.HeadCell>
-                        <Table.HeadCell>sexe</Table.HeadCell>
-                        <Table.HeadCell>adresse</Table.HeadCell>
-                        <Table.HeadCell>telephone</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Date de naissance
-                        </Table.HeadCell>
-                        <Table.HeadCell>profession</Table.HeadCell>
+                          <Table.HeadCell>Nom</Table.HeadCell>
+                          <Table.HeadCell>prenom</Table.HeadCell>
+                          <Table.HeadCell>sexe</Table.HeadCell>
+                          <Table.HeadCell>adresse</Table.HeadCell>
+                          <Table.HeadCell>telephone</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Date de naissance
+                          </Table.HeadCell>
+                          <Table.HeadCell>profession</Table.HeadCell>
 
-                        <Table.HeadCell>Email</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
-                      </Table.Head>
-                      <Table.Body className="divide-y">
-                        {[...utilisateurs.PRV_exploitant].map(
-                          ({
-                            id,
-                            role_utilisateur,
-                            statut,
-                            nom,
-                            prenom,
-                            sexe,
-                            adresse,
-                            telephone,
-                            dateNaissance,
-                            profession,
+                          <Table.HeadCell>Email</Table.HeadCell>
+                          <Table.HeadCell>Actions</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                          {[...utilisateurs.PRV_exploitant].map(
+                            ({
+                              id,
+                              role_utilisateur,
+                              statut,
+                              nom,
+                              prenom,
+                              sexe,
+                              adresse,
+                              telephone,
+                              dateNaissance,
+                              profession,
 
-                            email,
-                          }) => {
-                            return (
-                              <Table.Row
-                                key={id}
-                                className=" dark:border-gray-700 "
-                              >
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {role_utilisateur}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {statut}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {nom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {prenom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {sexe}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {telephone}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {dateNaissance}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {profession}
-                                </Table.Cell>
+                              email,
+                            }) => {
+                              return (
+                                <Table.Row
+                                  key={id}
+                                  className=" dark:border-gray-700 "
+                                >
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {role_utilisateur}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {statut}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {nom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {prenom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {sexe}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {telephone}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {dateNaissance}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {profession}
+                                  </Table.Cell>
 
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {email}
-                                </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {email}
+                                  </Table.Cell>
 
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  <Button
-                                    onClick={() => {
-                                      // gestionCompte(email,"desactivation_compte")
-                                      setOpenModal(true);
-                                      setEmailSelected(email);
-                                      setStatutCompte(statut);
-                                    }}
-                                    color={
-                                      statut === "activé" ? "failure" : "blue"
-                                    }
-                                  >
-                                    {statut === "activé"
-                                      ? "désactiver"
-                                      : "activer"}
-                                  </Button>
-                                  <Modal
-                                    key={id}
-                                    show={openModal}
-                                    onClose={() => setOpenModal(false)}
-                                  >
-                                    <Modal.Header>Avertissement</Modal.Header>
-                                    <Modal.Body>
-                                      <div className="space-y-6">
-                                        <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                          Vous êtes sur le point de désactiver
-                                          le compte de cet utilisateur.
-                                          L'utilisateur ne pourra plus se
-                                          connecter à son compte et ses accès
-                                          aux services seront immédiatement
-                                          suspendus Les données du compte seront
-                                          conservées conformément à notre
-                                          politique de rétention et un email de
-                                          notification sera automatiquement
-                                          envoyé à l'utilisateur. Cette action
-                                          peut être annulée ultérieurement et
-                                          toutes les sessions actives de
-                                          l'utilisateur seront déconnectées
-                                        </p>
-                                      </div>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                      {statutCompte === "activé" ? (
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    <Button
+                                      onClick={() => {
+                                        // gestionCompte(email,"desactivation_compte")
+                                        setOpenModal(true);
+                                        setEmailSelected(email);
+                                        setStatutCompte(statut);
+                                      }}
+                                      color={
+                                        statut === "activé" ? "failure" : "blue"
+                                      }
+                                    >
+                                      {statut === "activé"
+                                        ? "désactiver"
+                                        : "activer"}
+                                    </Button>
+                                    <Modal
+                                      key={id}
+                                      show={openModal}
+                                      onClose={() => setOpenModal(false)}
+                                    >
+                                      <Modal.Header>Avertissement</Modal.Header>
+                                      <Modal.Body>
+                                        <div className="space-y-6">
+                                          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                            Vous êtes sur le point de désactiver
+                                            le compte de cet utilisateur.
+                                            L'utilisateur ne pourra plus se
+                                            connecter à son compte et ses accès
+                                            aux services seront immédiatement
+                                            suspendus Les données du compte
+                                            seront conservées conformément à
+                                            notre politique de rétention et un
+                                            email de notification sera
+                                            automatiquement envoyé à
+                                            l'utilisateur. Cette action peut
+                                            être annulée ultérieurement et
+                                            toutes les sessions actives de
+                                            l'utilisateur seront déconnectées
+                                          </p>
+                                        </div>
+                                      </Modal.Body>
+                                      <Modal.Footer>
+                                        {statutCompte === "activé" ? (
+                                          <Button
+                                            onClick={() =>
+                                              // setOpenModal(false)
+
+                                              gestionCompte(
+                                                "desactivation_compte"
+                                              )
+                                            }
+                                            color="failure"
+                                          >
+                                            désactiver
+                                          </Button>
+                                        ) : (
+                                          <Button
+                                            onClick={() =>
+                                              gestionCompte(
+                                                "reactivation_compte"
+                                              )
+                                            }
+                                            color="blue"
+                                          >
+                                            activer
+                                          </Button>
+                                        )}
+
                                         <Button
-                                          onClick={() =>
-                                            // setOpenModal(false)
-
-                                            gestionCompte(
-                                              "desactivation_compte"
-                                            )
-                                          }
-                                          color="failure"
+                                          color="gray"
+                                          onClick={() => {
+                                            setOpenModal(false);
+                                            setEmailSelected("");
+                                            setStatutCompte("");
+                                          }}
                                         >
-                                          désactiver
+                                          Annuler
                                         </Button>
-                                      ) : (
-                                        <Button
-                                          onClick={() =>
-                                            gestionCompte("reactivation_compte")
-                                          }
-                                          color="blue"
-                                        >
-                                          activer
-                                        </Button>
-                                      )}
-
-                                      <Button
-                                        color="gray"
-                                        onClick={() => {
-                                          setOpenModal(false);
-                                          setEmailSelected("");
-                                          setStatutCompte("");
-                                        }}
-                                      >
-                                        Annuler
-                                      </Button>
-                                    </Modal.Footer>
-                                  </Modal>
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          }
-                        )}
-                      </Table.Body>
-                    </Table>
-                  }
+                                      </Modal.Footer>
+                                    </Modal>
+                                  </Table.Cell>
+                                </Table.Row>
+                              );
+                            }
+                          )}
+                        </Table.Body>
+                      </Table>
+                    ) : (
+                      <p className=" text-xl my-4">
+                        Aucun compte de personnes responsable de la vigilance
+                        chez un exploitant (PRV) n'a été enregistré
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -669,172 +705,183 @@ const GestionUtilisateurs = () => {
               <section className="grid grid-cols-3 gap-6  w-full px-10 py-10 mx-auto bg-white dark:bg-gray-800   rounded-xl">
                 <div className="col-span-full xl:col-span-6  shadow-sm rounded-xl">
                   <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-                    <h2 className="font-semibold ">Responsable d'organisme de réglementation</h2>
+                    <h2 className="font-semibold ">
+                      Responsable d'organisme de réglementation
+                    </h2>
                   </header>
                   <div className="p-3 overflow-x-auto ">
-                  {
-                    [...utilisateurs.responsable_organisme_reglementation].length!==0 &&
-                    <Table hoverable>
-                      <Table.Head>
-                        <Table.HeadCell>Role</Table.HeadCell>
-                        <Table.HeadCell>Status</Table.HeadCell>
+                    {[...utilisateurs.responsable_organisme_reglementation]
+                      .length !== 0 ? (
+                      <Table hoverable>
+                        <Table.Head>
+                          <Table.HeadCell>Role</Table.HeadCell>
+                          <Table.HeadCell>Status</Table.HeadCell>
 
-                        <Table.HeadCell>Nom</Table.HeadCell>
-                        <Table.HeadCell>prenom</Table.HeadCell>
-                        <Table.HeadCell>sexe</Table.HeadCell>
-                        <Table.HeadCell>adresse</Table.HeadCell>
-                        <Table.HeadCell>telephone</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Date de naissance
-                        </Table.HeadCell>
-                        <Table.HeadCell>profession</Table.HeadCell>
+                          <Table.HeadCell>Nom</Table.HeadCell>
+                          <Table.HeadCell>prenom</Table.HeadCell>
+                          <Table.HeadCell>sexe</Table.HeadCell>
+                          <Table.HeadCell>adresse</Table.HeadCell>
+                          <Table.HeadCell>telephone</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Date de naissance
+                          </Table.HeadCell>
+                          <Table.HeadCell>profession</Table.HeadCell>
 
-                        <Table.HeadCell>Email</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
-                      </Table.Head>
-                      <Table.Body className="divide-y">
-                        {[...utilisateurs.responsable_organisme_reglementation].map(
-                          ({
-                            id,
-                            role_utilisateur,
-                            statut,
-                            nom,
-                            prenom,
-                            sexe,
-                            adresse,
-                            telephone,
-                            dateNaissance,
-                            profession,
+                          <Table.HeadCell>Email</Table.HeadCell>
+                          <Table.HeadCell>Actions</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                          {[
+                            ...utilisateurs.responsable_organisme_reglementation,
+                          ].map(
+                            ({
+                              id,
+                              role_utilisateur,
+                              statut,
+                              nom,
+                              prenom,
+                              sexe,
+                              adresse,
+                              telephone,
+                              dateNaissance,
+                              profession,
 
-                            email,
-                          }) => {
-                            return (
-                              <Table.Row
-                                key={id}
-                                className=" dark:border-gray-700 "
-                              >
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {role_utilisateur}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {statut}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {nom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {prenom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {sexe}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {telephone}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {dateNaissance}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {profession}
-                                </Table.Cell>
+                              email,
+                            }) => {
+                              return (
+                                <Table.Row
+                                  key={id}
+                                  className=" dark:border-gray-700 "
+                                >
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {role_utilisateur}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {statut}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {nom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {prenom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {sexe}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {telephone}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {dateNaissance}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {profession}
+                                  </Table.Cell>
 
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {email}
-                                </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {email}
+                                  </Table.Cell>
 
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  <Button
-                                    onClick={() => {
-                                      // gestionCompte(email,"desactivation_compte")
-                                      setOpenModal(true);
-                                      setEmailSelected(email);
-                                      setStatutCompte(statut);
-                                    }}
-                                    color={
-                                      statut === "activé" ? "failure" : "blue"
-                                    }
-                                  >
-                                    {statut === "activé"
-                                      ? "désactiver"
-                                      : "activer"}
-                                  </Button>
-                                  <Modal
-                                    key={id}
-                                    show={openModal}
-                                    onClose={() => setOpenModal(false)}
-                                  >
-                                    <Modal.Header>Avertissement</Modal.Header>
-                                    <Modal.Body>
-                                      <div className="space-y-6">
-                                        <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                          Vous êtes sur le point de désactiver
-                                          le compte de cet utilisateur.
-                                          L'utilisateur ne pourra plus se
-                                          connecter à son compte et ses accès
-                                          aux services seront immédiatement
-                                          suspendus Les données du compte seront
-                                          conservées conformément à notre
-                                          politique de rétention et un email de
-                                          notification sera automatiquement
-                                          envoyé à l'utilisateur. Cette action
-                                          peut être annulée ultérieurement et
-                                          toutes les sessions actives de
-                                          l'utilisateur seront déconnectées
-                                        </p>
-                                      </div>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                      {statutCompte === "activé" ? (
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    <Button
+                                      onClick={() => {
+                                        // gestionCompte(email,"desactivation_compte")
+                                        setOpenModal(true);
+                                        setEmailSelected(email);
+                                        setStatutCompte(statut);
+                                      }}
+                                      color={
+                                        statut === "activé" ? "failure" : "blue"
+                                      }
+                                    >
+                                      {statut === "activé"
+                                        ? "désactiver"
+                                        : "activer"}
+                                    </Button>
+                                    <Modal
+                                      key={id}
+                                      show={openModal}
+                                      onClose={() => setOpenModal(false)}
+                                    >
+                                      <Modal.Header>Avertissement</Modal.Header>
+                                      <Modal.Body>
+                                        <div className="space-y-6">
+                                          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                            Vous êtes sur le point de désactiver
+                                            le compte de cet utilisateur.
+                                            L'utilisateur ne pourra plus se
+                                            connecter à son compte et ses accès
+                                            aux services seront immédiatement
+                                            suspendus Les données du compte
+                                            seront conservées conformément à
+                                            notre politique de rétention et un
+                                            email de notification sera
+                                            automatiquement envoyé à
+                                            l'utilisateur. Cette action peut
+                                            être annulée ultérieurement et
+                                            toutes les sessions actives de
+                                            l'utilisateur seront déconnectées
+                                          </p>
+                                        </div>
+                                      </Modal.Body>
+                                      <Modal.Footer>
+                                        {statutCompte === "activé" ? (
+                                          <Button
+                                            onClick={() =>
+                                              // setOpenModal(false)
+
+                                              gestionCompte(
+                                                "desactivation_compte"
+                                              )
+                                            }
+                                            color="failure"
+                                          >
+                                            désactiver
+                                          </Button>
+                                        ) : (
+                                          <Button
+                                            onClick={() =>
+                                              gestionCompte(
+                                                "reactivation_compte"
+                                              )
+                                            }
+                                            color="blue"
+                                          >
+                                            activer
+                                          </Button>
+                                        )}
+
                                         <Button
-                                          onClick={() =>
-                                            // setOpenModal(false)
-
-                                            gestionCompte(
-                                              "desactivation_compte"
-                                            )
-                                          }
-                                          color="failure"
+                                          color="gray"
+                                          onClick={() => {
+                                            setOpenModal(false);
+                                            setEmailSelected("");
+                                            setStatutCompte("");
+                                          }}
                                         >
-                                          désactiver
+                                          Annuler
                                         </Button>
-                                      ) : (
-                                        <Button
-                                          onClick={() =>
-                                            gestionCompte("reactivation_compte")
-                                          }
-                                          color="blue"
-                                        >
-                                          activer
-                                        </Button>
-                                      )}
-
-                                      <Button
-                                        color="gray"
-                                        onClick={() => {
-                                          setOpenModal(false);
-                                          setEmailSelected("");
-                                          setStatutCompte("");
-                                        }}
-                                      >
-                                        Annuler
-                                      </Button>
-                                    </Modal.Footer>
-                                  </Modal>
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          }
-                        )}
-                      </Table.Body>
-                    </Table>
-                  }
+                                      </Modal.Footer>
+                                    </Modal>
+                                  </Table.Cell>
+                                </Table.Row>
+                              );
+                            }
+                          )}
+                        </Table.Body>
+                      </Table>
+                    ) : (
+                      <p className=" text-xl my-4">
+                        Aucun compte de responsable d'organisme de
+                        réglementation n'a été enregistré
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
-
             </div>
           </div>
         </main>

@@ -4,7 +4,7 @@ import SidebarLinkGroup from "./SidebarLinkGroup";
 const SidebarLinks = ({ pathname, setSidebarExpanded }) => {
   const { currentUser, changeCurrentUser } = useAuthProvider();
 
-  const role_utilisateur = "responsable_organisme_reglementation";
+  const role_utilisateur = "administrateur";
   // const role_utilisateur = currentUser.role_utilisateur;
 
   switch (role_utilisateur) {

@@ -5,11 +5,16 @@ import Header from "../partials/Header";
 import FilterButton from "../components/DropdownFilter";
 import Datepicker from "../components/Datepicker";
 
-import { Table } from "flowbite-react";
+import { Alert, Table } from "flowbite-react";
 import axios from "axios";
+import { useAuthProvider } from "../utils/AuthContext";
+import { User } from "lucide-react";
 
 const DemandeInscription = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const { currentUser, changeCurrentUser } = useAuthProvider();
+
   const [demandes, setDemandes] = useState({
     professionnel_sante: [],
     responsable_organisme_reglementation: [],
@@ -18,24 +23,22 @@ const DemandeInscription = () => {
 
   useEffect(() => {
     axios
-      .get(
-        "/api/utilisateur/demandes",
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            // application/json;
-          },
-        }
-      )
+      .get("/api/utilisateur/demandes", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentUser.token}`,
+          // application/json;
+        },
+      })
       .then(function (response) {
-        // console.log(response.data);
+        // console.log(response.data.professionnel_sante);
 
         setDemandes({
-          professionnel_sante: response.data.professionnel_sante,
-          responsable_organisme_reglementation: response.data.responsable_organisme_reglementation,
-          PRV_exploitant: response.data.PRV_exploitant,
-        })
+          professionnel_sante: response.data.professionnel_sante || [],
+          responsable_organisme_reglementation:
+            response.data.responsable_organisme_reglementation || [],
+          PRV_exploitant: response.data.PRV_exploitant || [],
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -94,96 +97,103 @@ const DemandeInscription = () => {
                     </h2>
                   </header>
                   <div className="p-3 overflow-x-auto">
-                    <Table hoverable>
-                      <Table.Head>
-                        <Table.HeadCell>Role</Table.HeadCell>
-                        <Table.HeadCell>Nom</Table.HeadCell>
-                        <Table.HeadCell>prenom</Table.HeadCell>
-                        <Table.HeadCell>sexe</Table.HeadCell>
-                        <Table.HeadCell>adresse</Table.HeadCell>
-                        <Table.HeadCell>telephone</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Date de naissance
-                        </Table.HeadCell>
-                        <Table.HeadCell>profession</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Structure de travail
-                        </Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Adresse de la structure de travail
-                        </Table.HeadCell>
-                        <Table.HeadCell>Specialité</Table.HeadCell>
-                        <Table.HeadCell>District/localite</Table.HeadCell>
-                        <Table.HeadCell>Email</Table.HeadCell>
-                      </Table.Head>
-                      <Table.Body className="divide-y">
-                        {[...demandes.professionnel_sante].map(
-                          ({
-                            id,
-                            role_utilisateur,
-                            nom,
-                            prenom,
-                            sexe,
-                            adresse,
-                            telephone,
-                            dateNaissance,
-                            profession,
-                            structure_travail,
-                            adresse_structure_travail,
-                            specilité,
-                            district_localite,
-                            email,
-                          }) => {
-                            return (
-                              <Table.Row
-                                key={id}
-                                className=" dark:border-gray-700 "
-                              >
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {role_utilisateur}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {nom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {prenom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {sexe}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {telephone}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {dateNaissance}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {profession}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {structure_travail}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse_structure_travail}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {specilité}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {district_localite}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {email}
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          }
-                        )}
-                      </Table.Body>
-                    </Table>
+                    {[...demandes.professionnel_sante].length !== 0 ? (
+                      <Table hoverable>
+                        <Table.Head>
+                          <Table.HeadCell>Role</Table.HeadCell>
+                          <Table.HeadCell>Nom</Table.HeadCell>
+                          <Table.HeadCell>prenom</Table.HeadCell>
+                          <Table.HeadCell>sexe</Table.HeadCell>
+                          <Table.HeadCell>adresse</Table.HeadCell>
+                          <Table.HeadCell>telephone</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Date de naissance
+                          </Table.HeadCell>
+                          <Table.HeadCell>profession</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Structure de travail
+                          </Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Adresse de la structure de travail
+                          </Table.HeadCell>
+                          <Table.HeadCell>Specialité</Table.HeadCell>
+                          <Table.HeadCell>District/localite</Table.HeadCell>
+                          <Table.HeadCell>Email</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                          {[...demandes.professionnel_sante].map(
+                            ({
+                              id,
+                              role_utilisateur,
+                              nom,
+                              prenom,
+                              sexe,
+                              adresse,
+                              telephone,
+                              dateNaissance,
+                              profession,
+                              structure_travail,
+                              adresse_structure_travail,
+                              specilité,
+                              district_localite,
+                              email,
+                            }) => {
+                              return (
+                                <Table.Row
+                                  key={id}
+                                  className=" dark:border-gray-700 "
+                                >
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {role_utilisateur}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {nom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {prenom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {sexe}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {telephone}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {dateNaissance}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {profession}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {structure_travail}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse_structure_travail}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {specilité}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {district_localite}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {email}
+                                  </Table.Cell>
+                                </Table.Row>
+                              );
+                            }
+                          )}
+                        </Table.Body>
+                      </Table>
+                    ) : (
+                      <p className=" text-xl my-4">
+                        Aucune demande d'inscription de personnes responsable de
+                        la vigilance chez un exploitant (PRV) n'a été enregistré
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -196,96 +206,103 @@ const DemandeInscription = () => {
                     </h2>
                   </header>
                   <div className="p-3 overflow-x-auto">
-                    <Table hoverable>
-                      <Table.Head>
-                        <Table.HeadCell>Role</Table.HeadCell>
-                        <Table.HeadCell>Nom</Table.HeadCell>
-                        <Table.HeadCell>prenom</Table.HeadCell>
-                        <Table.HeadCell>sexe</Table.HeadCell>
-                        <Table.HeadCell>adresse</Table.HeadCell>
-                        <Table.HeadCell>telephone</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Date de naissance
-                        </Table.HeadCell>
-                        <Table.HeadCell>profession</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Structure de travail
-                        </Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Adresse de la structure de travail
-                        </Table.HeadCell>
-                        <Table.HeadCell>Specialité</Table.HeadCell>
-                        <Table.HeadCell>District/localite</Table.HeadCell>
-                        <Table.HeadCell>Email</Table.HeadCell>
-                      </Table.Head>
-                      <Table.Body className="divide-y">
-                        {[...demandes.professionnel_sante].map(
-                          ({
-                            id,
-                            role_utilisateur,
-                            nom,
-                            prenom,
-                            sexe,
-                            adresse,
-                            telephone,
-                            dateNaissance,
-                            profession,
-                            structure_travail,
-                            adresse_structure_travail,
-                            specilité,
-                            district_localite,
-                            email,
-                          }) => {
-                            return (
-                              <Table.Row
-                                key={id}
-                                className=" dark:border-gray-700 "
-                              >
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {role_utilisateur}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {nom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {prenom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {sexe}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {telephone}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {dateNaissance}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {profession}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {structure_travail}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse_structure_travail}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {specilité}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {district_localite}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {email}
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          }
-                        )}
-                      </Table.Body>
-                    </Table>
+                    {[...demandes.professionnel_sante].length !== 0 ? (
+                      <Table hoverable>
+                        <Table.Head>
+                          <Table.HeadCell>Role</Table.HeadCell>
+                          <Table.HeadCell>Nom</Table.HeadCell>
+                          <Table.HeadCell>prenom</Table.HeadCell>
+                          <Table.HeadCell>sexe</Table.HeadCell>
+                          <Table.HeadCell>adresse</Table.HeadCell>
+                          <Table.HeadCell>telephone</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Date de naissance
+                          </Table.HeadCell>
+                          <Table.HeadCell>profession</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Structure de travail
+                          </Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Adresse de la structure de travail
+                          </Table.HeadCell>
+                          <Table.HeadCell>Specialité</Table.HeadCell>
+                          <Table.HeadCell>District/localite</Table.HeadCell>
+                          <Table.HeadCell>Email</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                          {[...demandes.professionnel_sante].map(
+                            ({
+                              id,
+                              role_utilisateur,
+                              nom,
+                              prenom,
+                              sexe,
+                              adresse,
+                              telephone,
+                              dateNaissance,
+                              profession,
+                              structure_travail,
+                              adresse_structure_travail,
+                              specilité,
+                              district_localite,
+                              email,
+                            }) => {
+                              return (
+                                <Table.Row
+                                  key={id}
+                                  className=" dark:border-gray-700 "
+                                >
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {role_utilisateur}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {nom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {prenom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {sexe}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {telephone}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {dateNaissance}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {profession}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {structure_travail}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse_structure_travail}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {specilité}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {district_localite}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {email}
+                                  </Table.Cell>
+                                </Table.Row>
+                              );
+                            }
+                          )}
+                        </Table.Body>
+                      </Table>
+                    ) : (
+                      <p className=" text-xl my-4">
+                        Aucune demande d'inscription de professionnels de la
+                        santé n'a été enregistré
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -298,96 +315,106 @@ const DemandeInscription = () => {
                     </h2>
                   </header>
                   <div className="p-3 overflow-x-auto">
-                    <Table hoverable>
-                      <Table.Head>
-                        <Table.HeadCell>Role</Table.HeadCell>
-                        <Table.HeadCell>Nom</Table.HeadCell>
-                        <Table.HeadCell>prenom</Table.HeadCell>
-                        <Table.HeadCell>sexe</Table.HeadCell>
-                        <Table.HeadCell>adresse</Table.HeadCell>
-                        <Table.HeadCell>telephone</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Date de naissance
-                        </Table.HeadCell>
-                        <Table.HeadCell>profession</Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Structure de travail
-                        </Table.HeadCell>
-                        <Table.HeadCell className="whitespace-nowrap">
-                          Adresse de la structure de travail
-                        </Table.HeadCell>
-                        <Table.HeadCell>Specialité</Table.HeadCell>
-                        <Table.HeadCell>District/localite</Table.HeadCell>
-                        <Table.HeadCell>Email</Table.HeadCell>
-                      </Table.Head>
-                      <Table.Body className="divide-y">
-                        {[...demandes.responsable_organisme_reglementation].map(
-                          ({
-                            id,
-                            role_utilisateur,
-                            nom,
-                            prenom,
-                            sexe,
-                            adresse,
-                            telephone,
-                            dateNaissance,
-                            profession,
-                            structure_travail,
-                            adresse_structure_travail,
-                            specilité,
-                            district_localite,
-                            email,
-                          }) => {
-                            return (
-                              <Table.Row
-                                key={id}
-                                className=" dark:border-gray-700 "
-                              >
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {role_utilisateur}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {nom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {prenom}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {sexe}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {telephone}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {dateNaissance}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {profession}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {structure_travail}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {adresse_structure_travail}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {specilité}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {district_localite}
-                                </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                  {email}
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          }
-                        )}
-                      </Table.Body>
-                    </Table>
+                    {[...demandes.responsable_organisme_reglementation]
+                      .length !== 0 ? (
+                      <Table hoverable>
+                        <Table.Head>
+                          <Table.HeadCell>Role</Table.HeadCell>
+                          <Table.HeadCell>Nom</Table.HeadCell>
+                          <Table.HeadCell>prenom</Table.HeadCell>
+                          <Table.HeadCell>sexe</Table.HeadCell>
+                          <Table.HeadCell>adresse</Table.HeadCell>
+                          <Table.HeadCell>telephone</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Date de naissance
+                          </Table.HeadCell>
+                          <Table.HeadCell>profession</Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Structure de travail
+                          </Table.HeadCell>
+                          <Table.HeadCell className="whitespace-nowrap">
+                            Adresse de la structure de travail
+                          </Table.HeadCell>
+                          <Table.HeadCell>Specialité</Table.HeadCell>
+                          <Table.HeadCell>District/localite</Table.HeadCell>
+                          <Table.HeadCell>Email</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                          {[
+                            ...demandes.responsable_organisme_reglementation,
+                          ].map(
+                            ({
+                              id,
+                              role_utilisateur,
+                              nom,
+                              prenom,
+                              sexe,
+                              adresse,
+                              telephone,
+                              dateNaissance,
+                              profession,
+                              structure_travail,
+                              adresse_structure_travail,
+                              specilité,
+                              district_localite,
+                              email,
+                            }) => {
+                              return (
+                                <Table.Row
+                                  key={id}
+                                  className=" dark:border-gray-700 "
+                                >
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {role_utilisateur}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {nom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {prenom}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {sexe}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {telephone}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {dateNaissance}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {profession}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {structure_travail}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {adresse_structure_travail}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {specilité}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {district_localite}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    {email}
+                                  </Table.Cell>
+                                </Table.Row>
+                              );
+                            }
+                          )}
+                        </Table.Body>
+                      </Table>
+                    ) : (
+                      <p className=" text-xl my-4">
+                        Aucune demande d'inscription de responsables d'organisme
+                        de réglementation n'a été enregistré
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>

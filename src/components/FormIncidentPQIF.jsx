@@ -239,12 +239,12 @@ const FormIncidentPQIF = ({ change, notificationData, errors }) => {
               onChange={(e) => change(e)}
               defaultValue={notificationData.date_apparition_evenement}
             />
-            {errors.date_apparition_evenement  && (
-            <div className="  my-2 text-sm font-medium  ">
-              <Alert color="failure" icon={Info}>
-                {errors.date_apparition_evenement}
-              </Alert>
-            </div>
+            {errors.date_apparition_evenement && (
+              <div className="  my-2 text-sm font-medium  ">
+                <Alert color="failure" icon={Info}>
+                  {errors.date_apparition_evenement}
+                </Alert>
+              </div>
             )}
           </div>
           <div>
@@ -264,12 +264,12 @@ const FormIncidentPQIF = ({ change, notificationData, errors }) => {
               onChange={(e) => change(e)}
               defaultValue={notificationData.date_disparition_evenement}
             />
-            {errors.date_disparition_evenement  && (
-            <div className="  my-2 text-sm font-medium  ">
-              <Alert color="failure" icon={Info}>
-                {errors.date_disparition_evenement}
-              </Alert>
-            </div>
+            {errors.date_disparition_evenement && (
+              <div className="  my-2 text-sm font-medium  ">
+                <Alert color="failure" icon={Info}>
+                  {errors.date_disparition_evenement}
+                </Alert>
+              </div>
             )}
           </div>
           {/* <div className="col-span-2 ">

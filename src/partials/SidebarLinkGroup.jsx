@@ -1,10 +1,12 @@
 import {
+  BriefcaseBusiness,
   ChevronDown,
   ChevronUp,
   History,
   Notebook,
   Pill,
   Send,
+  TableProperties,
   UserCog,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -58,6 +60,10 @@ const SidebarLinkGroup = ({
               {titre === "Produit de sante" && <Pill size={21} />}
               {titre === "Traitements" && <Notebook size={21} />}
               {titre === "Mes notifications" && <History size={21} />}
+              {titre === "Exploitant" && <BriefcaseBusiness size={21} />}
+              {titre === "Exploitation" && <TableProperties size={21} />}
+
+
             </span>
             <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
               {titre}

@@ -23,6 +23,10 @@ import NotificationEEIM from "./pages/NotificationEEIM";
 import NotificationPQIF from "./pages/NotificationPQIF";
 import NotificationMAPI from "./pages/NotificationMAPI";
 import HistoriqueNotifications from "./pages/HistoriqueNotifications";
+import Exploitants from "./pages/Exploitants";
+import AjoutExploitant from "./pages/AjoutExploitant";
+import Exploitations from "./pages/Exploitations";
+import AjoutExploitation from "./pages/AjoutExploitation";
 
 function App() {
   const location = useLocation();
@@ -49,12 +53,18 @@ function App() {
         <Route path="/notification/mapi" element={<NotificationMAPI />} />
         <Route path="/notification/pqif" element={<NotificationPQIF />} />
 
+        <Route path="/notifications/liste" element={<HistoriqueNotifications />} />
+
         <Route
           path="/notifications/historique"
-          element={
-            <HistoriqueNotifications  />
-          }
+          element={<HistoriqueNotifications />}
         />
+
+        <Route path="/exploitant/liste" element={<Exploitants />} />
+        <Route path="/exploitant/ajout" element={<AjoutExploitant />} />
+
+        <Route path="/exploitation/liste" element={<Exploitations />} />
+        <Route path="/exploitation/ajout" element={<AjoutExploitation />} />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />

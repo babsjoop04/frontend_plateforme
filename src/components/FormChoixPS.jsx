@@ -517,7 +517,7 @@ const FormChoixPS = ({ change, notificationData, setNotificationData,errors }) =
                     >
                       <optgroup label="Medicament">
                         <option>{""}</option>
-                        <option value="suivi ambulatoire">
+                        <option value={1}>
                           Suivi ambulatoire
                         </option>
                       </optgroup>
@@ -843,7 +843,7 @@ const FormChoixPS = ({ change, notificationData, setNotificationData,errors }) =
                     >
                       <optgroup label="Medicament">
                         <option>{""}</option>
-                        <option value="suivi ambulatoire">
+                        <option value={1}>
                           Suivi ambulatoire
                         </option>
                       </optgroup>

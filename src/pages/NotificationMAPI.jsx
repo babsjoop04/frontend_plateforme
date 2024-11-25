@@ -41,7 +41,7 @@ const NotificationMAPI = () => {
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
 
   const [notificationData, setNotificationData] = useState({
-    type_notification: "notification_eeim",
+    type_notification: "notification_mapi",
     numero_dossier_patient: "",
     prenom_initiale: "",
     nom_initiale: "",
@@ -105,13 +105,15 @@ const NotificationMAPI = () => {
       })
       .then(function (response) {
         // setTraitement((value) => !value);
+          // console.log(response);
+
 
         if (response.statusText === "OK") {
           // console.log(response.statusText==="OK");
           setOpenModal(true);
 
           setNotificationData({
-            type_notification: "notification_eeim",
+            type_notification: "notification_mapi",
             numero_dossier_patient: "",
             prenom_initiale: "",
             nom_initiale: "",
@@ -142,6 +144,7 @@ const NotificationMAPI = () => {
         // }, 2500);
       })
       .catch(function (error) {
+          // console.log(error);
         
         const responseErrors = error.response.data.errors;
         setErrors(responseErrors)
@@ -290,7 +293,7 @@ const NotificationMAPI = () => {
                     >
                       {/* {!traitement && <FilePen />} */}
 
-                      <span className="ml-1">Notiier</span>
+                      <span className="ml-1">Notifier</span>
                     </Button>
                   ) : (
                     <Button

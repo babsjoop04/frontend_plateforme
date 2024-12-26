@@ -13,10 +13,10 @@ const AuthContext = createContext({
 
 const AuthProvider = ({children}) => {
   const persistedUser = {
-    token: localStorage.getItem("token"),
-    role_utilisateur: localStorage.getItem("role_utilisateur"),
-    prenom: localStorage.getItem("prenom"),
-    nom: localStorage.getItem("nom"),
+    token: localStorage.getItem("token")|| null,
+    role_utilisateur: localStorage.getItem("role_utilisateur")|| null,
+    prenom: localStorage.getItem("prenom")|| null,
+    nom: localStorage.getItem("nom")|| null,
   };
   // localStorage.getItem('theme');
   const [user, setUser] = useState(persistedUser);

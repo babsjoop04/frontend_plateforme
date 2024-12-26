@@ -23,7 +23,7 @@ const FormInfoPerso = ({ change, userData, errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.prenom}
           />
-          {errors.prenom !== "" && (
+          {errors.prenom  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.prenom}
@@ -49,7 +49,7 @@ const FormInfoPerso = ({ change, userData, errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.nom}
           />
-          {errors.nom !== "" && (
+          {errors.nom  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.nom}
@@ -73,7 +73,7 @@ const FormInfoPerso = ({ change, userData, errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.dateNaissance}
           />
-          {errors.dateNaissance !== "" && (
+          {errors.dateNaissance  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.dateNaissance}
@@ -93,12 +93,14 @@ const FormInfoPerso = ({ change, userData, errors }) => {
             name="sexe"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onChange={(e) => change(e)}
+            defaultValue={userData.sexe}
+
           >
-            <option>{""}</option>
+            <option>Veuillez choisir votre sexe</option>
             <option value="homme">Homme</option>
             <option value="femme">Femme</option>
           </select>
-          {errors.sexe !== "" && (
+          {errors.sexe  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.sexe}
@@ -123,7 +125,7 @@ const FormInfoPerso = ({ change, userData, errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.profession}
           />
-          {errors.profession !== "" && (
+          {errors.profession  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.profession}
@@ -148,7 +150,7 @@ const FormInfoPerso = ({ change, userData, errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.adresse}
           />
-          {errors.adresse !== "" && (
+          {errors.adresse  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.adresse}
@@ -173,7 +175,7 @@ const FormInfoPerso = ({ change, userData, errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.telephone}
           />
-          {errors.telephone !== "" && (
+          {errors.telephone  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.telephone}

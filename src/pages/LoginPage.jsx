@@ -98,7 +98,7 @@ const LoginPage = () => {
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="flex justify-center  my-2 ">
             <img src={Logo} className="w-17 object-cover  h-12 rounded-full" />
-            <h5 className="font-semibold my-4 mx-2 md:order-0 text-white">
+            <h5 className="font-semibold my-4 mx-2 md:order-0 text-gray-900  dark:text-white">
               Sama pharmacovigile
             </h5>
           </div>

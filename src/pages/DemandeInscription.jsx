@@ -5,13 +5,17 @@ import Header from "../partials/Header";
 import FilterButton from "../components/DropdownFilter";
 import Datepicker from "../components/Datepicker";
 
-import { Alert, Table } from "flowbite-react";
+import { Alert, Button, Table, Modal } from "flowbite-react";
+
 import axios from "axios";
 import { useAuthProvider } from "../utils/AuthContext";
-import { User } from "lucide-react";
+
+import { CircleAlert } from "lucide-react";
 
 const DemandeInscription = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [traitement, setTraitement] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const { currentUser, changeCurrentUser } = useAuthProvider();
 
@@ -21,7 +25,7 @@ const DemandeInscription = () => {
     PRV_exploitant: [],
   });
 
-  useEffect(() => {
+  const getDemandes = () => {
     axios
       .get("/api/utilisateur/demandes", {
         headers: {
@@ -31,7 +35,7 @@ const DemandeInscription = () => {
         },
       })
       .then(function (response) {
-        // console.log(response.data.professionnel_sante);
+        // console.log(response.data);
 
         setDemandes({
           professionnel_sante: response.data.professionnel_sante || [],
@@ -43,6 +47,119 @@ const DemandeInscription = () => {
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  const gererDemande = (email, decision) => {
+    // console.log(email);
+    setTraitement(true);
+
+    axios
+      .post(
+        "/api/utilisateur/gestion",
+        {
+          email_utilisateur: email,
+          decision: decision,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${currentUser.token}`,
+            // application/json;
+          },
+        }
+      )
+      .then(function (response) {
+        // console.log(response);
+        setTraitement(false);
+        getDemandes();
+        setOpenModal(true);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const downloadFiles = async (email, type = "demande_inscription") => {
+    // console.log(email);
+
+    try {
+      // Configuration CORS côté Laravel nécessaire
+      const response = await axios({
+        url: "/api/utilisateur/demande/fichiers_demande/download",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentUser.token}`,
+          // application/json;
+        },
+        responseType: "blob", // Important pour les fichiers
+        params: {
+          //       nom_fichiers: "2024_10_26_10_23_54_Lefevre_Pierre.zip",
+          email: email,
+          type: type,
+        },
+      });
+
+      
+      // Créez un lien de téléchargement
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", response.headers['x-filename']);
+      document.body.appendChild(link);
+      link.click();
+
+      // Nettoyez
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Erreur de téléchargement", error);
+    }
+  };
+
+  const ButtonsActions = ({ email }) => {
+    // console.log(email);
+    // traitement ? (
+    //   <Button isProcessing={traitement} color="blue">
+    //     Traitements
+    //   </Button>
+    // ) : (
+
+    return traitement ? (
+      <Button isProcessing={traitement} color="blue">
+        Traitements
+      </Button>
+    ) : (
+      <Button.Group>
+        <Button
+          onClick={() => {
+            downloadFiles(email);
+          }}
+        >
+          Telecharger fichiers
+        </Button>
+        <Button
+          color="blue"
+          onClick={() => {
+            gererDemande(email, "demande_inscription_acceptée");
+          }}
+        >
+          Accepter
+        </Button>
+        <Button
+          color="red"
+          onClick={() => {
+            gererDemande(email, "demande_inscription_refusée");
+          }}
+        >
+          Refuser
+        </Button>
+      </Button.Group>
+    );
+  };
+
+  useEffect(() => {
+    getDemandes();
   }, []);
 
   return (
@@ -97,7 +214,7 @@ const DemandeInscription = () => {
                     </h2>
                   </header>
                   <div className="p-3 overflow-x-auto">
-                    {[...demandes.professionnel_sante].length !== 0 ? (
+                    {[...demandes.PRV_exploitant].length !== 0 ? (
                       <Table hoverable>
                         <Table.Head>
                           <Table.HeadCell>Role</Table.HeadCell>
@@ -116,12 +233,11 @@ const DemandeInscription = () => {
                           <Table.HeadCell className="whitespace-nowrap">
                             Adresse de la structure de travail
                           </Table.HeadCell>
-                          <Table.HeadCell>Specialité</Table.HeadCell>
-                          <Table.HeadCell>District/localite</Table.HeadCell>
                           <Table.HeadCell>Email</Table.HeadCell>
+                          <Table.HeadCell>Actions</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
-                          {[...demandes.professionnel_sante].map(
+                          {[...demandes.PRV_exploitant].map(
                             ({
                               id,
                               role_utilisateur,
@@ -173,14 +289,12 @@ const DemandeInscription = () => {
                                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {adresse_structure_travail}
                                   </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    {specilité}
-                                  </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    {district_localite}
-                                  </Table.Cell>
+
                                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {email}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    <ButtonsActions email={email} />
                                   </Table.Cell>
                                 </Table.Row>
                               );
@@ -225,9 +339,8 @@ const DemandeInscription = () => {
                           <Table.HeadCell className="whitespace-nowrap">
                             Adresse de la structure de travail
                           </Table.HeadCell>
-                          <Table.HeadCell>Specialité</Table.HeadCell>
-                          <Table.HeadCell>District/localite</Table.HeadCell>
                           <Table.HeadCell>Email</Table.HeadCell>
+                          <Table.HeadCell>Action</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                           {[...demandes.professionnel_sante].map(
@@ -243,8 +356,6 @@ const DemandeInscription = () => {
                               profession,
                               structure_travail,
                               adresse_structure_travail,
-                              specilité,
-                              district_localite,
                               email,
                             }) => {
                               return (
@@ -282,14 +393,12 @@ const DemandeInscription = () => {
                                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {adresse_structure_travail}
                                   </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    {specilité}
-                                  </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    {district_localite}
-                                  </Table.Cell>
+
                                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {email}
+                                  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    <ButtonsActions email={email} />
                                   </Table.Cell>
                                 </Table.Row>
                               );
@@ -338,6 +447,7 @@ const DemandeInscription = () => {
                           <Table.HeadCell>Specialité</Table.HeadCell>
                           <Table.HeadCell>District/localite</Table.HeadCell>
                           <Table.HeadCell>Email</Table.HeadCell>
+                          <Table.HeadCell>Actions</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                           {[
@@ -403,6 +513,9 @@ const DemandeInscription = () => {
                                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {email}
                                   </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    <ButtonsActions email={email} />
+                                  </Table.Cell>
                                 </Table.Row>
                               );
                             }
@@ -423,6 +536,25 @@ const DemandeInscription = () => {
             </div>
           </div>
         </main>
+
+        <Modal
+          show={openModal}
+          onClose={() => {
+            setOpenModal(false);
+          }}
+        >
+          <Modal.Header>Message</Modal.Header>
+          <Modal.Body>
+            <div className="text-center">
+              <CircleAlert className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+              <p className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                Action effectuée avec succèss
+              </p>
+            </div>
+          </Modal.Body>
+
+          <Modal.Footer className="flex justify-end"></Modal.Footer>
+        </Modal>
 
         {/* <Banner /> */}
       </div>

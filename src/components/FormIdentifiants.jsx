@@ -22,7 +22,7 @@ const FormIdentifiants = ({ change, userData, errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.email}
           />
-          {errors.email !== "" && (
+          {errors.email  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.email}
@@ -47,7 +47,7 @@ const FormIdentifiants = ({ change, userData, errors }) => {
             placeholder="••••••••"
             defaultValue={userData.password}
           />
-          {errors.password !== "" && (
+          {errors.password  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.password}
@@ -72,7 +72,7 @@ const FormIdentifiants = ({ change, userData, errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.password_confirmation}
           />
-          {/* {errors.email !== "" && (
+          {/* {errors.email  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.email}

@@ -4,8 +4,8 @@ import SidebarLinkGroup from "./SidebarLinkGroup";
 const SidebarLinks = ({ pathname, setSidebarExpanded }) => {
   const { currentUser, changeCurrentUser } = useAuthProvider();
 
-  const role_utilisateur = "responsable_organisme_reglementation";
-  // const role_utilisateur = currentUser.role_utilisateur;
+  // const role_utilisateur = "administrateur";
+  const role_utilisateur = currentUser.role_utilisateur;
 
   switch (role_utilisateur) {
     case "administrateur":
@@ -276,16 +276,16 @@ const SidebarLinks = ({ pathname, setSidebarExpanded }) => {
           liste_sous_section: [
             {
               id: new Date().getTime(),
-              to: "/notifications/traitement/pqif",
+              to: "/traitement/actif",
               titre: "Mes traitements en cours",
-              isActive: pathname === "/notifications/traitement/pqif",
+              isActive: pathname === "/traitement/actif",
             },
 
             {
               id: new Date().getTime(),
-              to: "/notifications/traitement/eeim",
+              to: "/traitement/historique",
               titre: "Historique de mes traitements",
-              isActive: pathname === "/notifications/traitement/eeim",
+              isActive: pathname === "/traitement/historique",
             },
             
           ],

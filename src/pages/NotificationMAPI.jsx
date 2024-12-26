@@ -211,7 +211,7 @@ const NotificationMAPI = () => {
                         {/* <Badge placement="top-end"> */}
                         <Typography
                           variant="h6"
-                          color={activeStep === 0 ? "light-blue" : "white"}
+                          color={activeStep === 0 ? "light-blue" : "blue-gray"}
                         >
                           Constatateur
                         </Typography>
@@ -223,7 +223,7 @@ const NotificationMAPI = () => {
                       <div className="absolute -bottom-9 w-max text-center">
                         <Typography
                           variant="h6"
-                          color={activeStep === 1 ? "light-blue" : "white"}
+                          color={activeStep === 1 ? "light-blue" : "blue-gray"}
                         >
                           Produit(s) de santé
                         </Typography>
@@ -234,7 +234,7 @@ const NotificationMAPI = () => {
                       <div className="absolute -bottom-9 w-max text-center">
                         <Typography
                           variant="h6"
-                          color={activeStep === 2 ? "light-blue" : "white"}
+                          color={activeStep === 2 ? "light-blue" : "blue-gray"}
                         >
                           Incident
                         </Typography>

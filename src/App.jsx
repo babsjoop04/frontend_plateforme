@@ -27,6 +27,8 @@ import Exploitants from "./pages/Exploitants";
 import AjoutExploitant from "./pages/AjoutExploitant";
 import Exploitations from "./pages/Exploitations";
 import AjoutExploitation from "./pages/AjoutExploitation";
+import Traitements from "./pages/Traitements";
+import AuthControle from "./pages/AuthControle";
 
 function App() {
   const location = useLocation();
@@ -43,31 +45,157 @@ function App() {
         <Route index element={<PrivateHome />} />
         {/* <Route index  element={<Dashboard />} /> */}
         {/* <Route index  element={<Home />} /> */}
-        <Route path="/sinformer" element={<Sinformer />} />
-        <Route path="/utilisateurs/gestion" element={<GestionUtilisateurs />} />
-        <Route path="/utilisateurs/demandes" element={<DemandeInscription />} />
-        <Route path="/produits/gestion" element={<GestionProduits />} />
-        <Route path="/produits/ajout" element={<AjoutProduits />} />
+        <Route
+          path="/sinformer"
+          element={
+            <AuthControle>
+              <Sinformer />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/utilisateurs/gestion"
+          element={
+            <AuthControle>
+              <GestionUtilisateurs />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/utilisateurs/demandes"
+          element={
+            <AuthControle>
+              <DemandeInscription />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/produits/gestion"
+          element={
+            <AuthControle>
+              <GestionProduits />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/produits/ajout"
+          element={
+            <AuthControle>
+              <AjoutProduits />
+            </AuthControle>
+          }
+        />
 
-        <Route path="/notification/eeim" element={<NotificationEEIM />} />
-        <Route path="/notification/mapi" element={<NotificationMAPI />} />
-        <Route path="/notification/pqif" element={<NotificationPQIF />} />
+        <Route
+          path="/notification/eeim"
+          element={
+            <AuthControle>
+              <NotificationEEIM />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/notification/mapi"
+          element={
+            <AuthControle>
+              <NotificationMAPI />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/notification/pqif"
+          element={
+            <AuthControle>
+              <NotificationPQIF />
+            </AuthControle>
+          }
+        />
 
-        <Route path="/notifications/liste" element={<HistoriqueNotifications />} />
+        <Route
+          path="/notifications/liste"
+          element={
+            <AuthControle>
+              <HistoriqueNotifications />
+            </AuthControle>
+          }
+        />
 
         <Route
           path="/notifications/historique"
-          element={<HistoriqueNotifications />}
+          element={
+            <AuthControle>
+              <HistoriqueNotifications />
+            </AuthControle>
+          }
         />
 
-        <Route path="/exploitant/liste" element={<Exploitants />} />
-        <Route path="/exploitant/ajout" element={<AjoutExploitant />} />
+        <Route
+          path="/exploitant/liste"
+          element={
+            <AuthControle>
+              <Exploitants />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/exploitant/ajout"
+          element={
+            <AuthControle>
+              <AjoutExploitant />
+            </AuthControle>
+          }
+        />
 
-        <Route path="/exploitation/liste" element={<Exploitations />} />
-        <Route path="/exploitation/ajout" element={<AjoutExploitation />} />
+        <Route
+          path="/exploitation/liste"
+          element={
+            <AuthControle>
+              <Exploitations />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/exploitation/ajout"
+          element={
+            <AuthControle>
+              <AjoutExploitation />
+            </AuthControle>
+          }
+        />
 
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route
+          path="/traitement/historique"
+          element={
+            <AuthControle>
+              <Traitements historique={true} />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/traitement/actif"
+          element={
+            <AuthControle>
+              <Traitements />
+            </AuthControle>
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            <AuthControle>
+              <LoginPage />
+            </AuthControle>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            
+              <SignUpPage />
+           
+          }
+        />
       </Routes>
     </>
   );

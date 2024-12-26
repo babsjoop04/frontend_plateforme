@@ -29,7 +29,7 @@ const NotificationEEIM = () => {
   const [isLastStep, setIsLastStep] = useState(false);
   const [isFirstStep, setIsFirstStep] = useState(false);
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
   const [errors, setErrors] = useState({});
 
  
@@ -39,12 +39,11 @@ const NotificationEEIM = () => {
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
 
-  // const token = useSelector((state) => state.user.token)||"1|5eiXzIGElVxtC5kaBl7v028wpjqoiL9YpxR5TXVM8981959b";
   const { currentUser, changeCurrentUser } = useAuthProvider();
 
 
   const [notificationData, setNotificationData] = useState({
-    type_notification: "notification_mapi",
+    type_notification: "notification_eeim",
     numero_dossier_patient: "",
     prenom_initiale: "",
     nom_initiale: "",
@@ -110,6 +109,8 @@ const NotificationEEIM = () => {
         // setTraitement((value) => !value);
 
         if (response.statusText === "OK") {
+
+          setErrors({})
           // console.log(response.statusText==="OK");
           setOpenModal(true);
 
@@ -137,6 +138,7 @@ const NotificationEEIM = () => {
             motif_prise_produits_sante: "",
             infos_produits_santes: [],
           });
+
         }
         setActiveStep(0);
 
@@ -211,9 +213,9 @@ const NotificationEEIM = () => {
                         {/* <Badge placement="top-end"> */}
                         <Typography
                           variant="h6"
-                          color={activeStep === 0 ? "light-blue" : "white"}
+                          color={activeStep === 0 ? "light-blue" : "blue-gray"}
                         >
-                          Constatateur
+                          Info patient
                         </Typography>
                         {/* </Badge> */}
                       </div>
@@ -223,7 +225,7 @@ const NotificationEEIM = () => {
                       <div className="absolute -bottom-9 w-max text-center">
                         <Typography
                           variant="h6"
-                          color={activeStep === 1 ? "light-blue" : "white"}
+                          color={activeStep === 1 ? "light-blue" : "blue-gray"}
                         >
                           Produit(s) de santé
                         </Typography>
@@ -234,7 +236,7 @@ const NotificationEEIM = () => {
                       <div className="absolute -bottom-9 w-max text-center">
                         <Typography
                           variant="h6"
-                          color={activeStep === 2 ? "light-blue" : "white"}
+                          color={activeStep === 2 ? "light-blue" : "blue-gray"}
                         >
                           Incident
                         </Typography>

@@ -63,7 +63,7 @@ const HistoriqueNotifications = () => {
         },
       })
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         setNotifications(response.data);
 
         // setTimeout(() => {
@@ -114,8 +114,10 @@ const HistoriqueNotifications = () => {
         }
       )
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
+        annulerSelectionNotif();
         setOpenModalMessage(true);
+        getNotifs();
 
         setTimeout(() => {
           setTraitement(false);
@@ -624,6 +626,7 @@ const HistoriqueNotifications = () => {
             </div>
             {/* </div> */}
           </Modal.Body>
+          
           {currentUser.role_utilisateur ===
             "responsable_organisme_reglementation" && (
             <Modal.Footer className="flex justify-end	">

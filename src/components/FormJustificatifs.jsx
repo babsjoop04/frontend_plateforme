@@ -24,7 +24,7 @@ const FormJustificatifs = ({ change, userData,errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.specilité}
           />
-          {errors.specilité !== "" && (
+          {errors.specilité  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.specilité}
@@ -32,6 +32,8 @@ const FormJustificatifs = ({ change, userData,errors }) => {
             </div>
           )}
         </div>
+        {
+          userData.role_utilisateur==="professionnel_sante" &&
         <div>
           <label
             htmlFor="district_localite"
@@ -49,7 +51,7 @@ const FormJustificatifs = ({ change, userData,errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.district_localite}
           />
-          {errors.district_localite !== "" && (
+          {errors.district_localite  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.district_localite}
@@ -57,6 +59,7 @@ const FormJustificatifs = ({ change, userData,errors }) => {
             </div>
           )}
         </div>
+        }
         <div>
           <label
             htmlFor="structure_travail"
@@ -74,7 +77,7 @@ const FormJustificatifs = ({ change, userData,errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.structure_travail}
           />
-          {errors.structure_travail !== "" && (
+          {errors.structure_travail  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.structure_travail}
@@ -99,7 +102,7 @@ const FormJustificatifs = ({ change, userData,errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.adresse_structure_travail}
           />
-          {errors.adresse_structure_travail !== "" && (
+          {errors.adresse_structure_travail  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.adresse_structure_travail}
@@ -139,7 +142,7 @@ const FormJustificatifs = ({ change, userData,errors }) => {
             onChange={(e) => change(e)}
             defaultValue={userData.files}
           />
-          {errors.files !== "" && (
+          {errors.files  && (
             <div className="  my-2 text-sm font-medium  ">
               <Alert color="failure" icon={Info}>
                 {errors.files}

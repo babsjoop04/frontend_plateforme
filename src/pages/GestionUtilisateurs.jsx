@@ -23,6 +23,22 @@ const GestionUtilisateurs = () => {
 
   const { currentUser, changeCurrentUser } = useAuthProvider();
 
+  const ButtonDecision = ({ statut, email }) => {
+    return (
+      <Button
+        onClick={() => {
+          // gestionCompte(email,"desactivation_compte")
+          setOpenModal(true);
+          setEmailSelected(email);
+          setStatutCompte(statut);
+        }}
+        color={statut === "activé" ? "failure" : "blue"}
+      >
+        {statut === "activé" ? "désactiver" : "activer"}
+      </Button>
+    );
+  };
+
   const getAccount = () => {
     axios
       .get(
@@ -252,86 +268,10 @@ const GestionUtilisateurs = () => {
                                   </Table.Cell>
 
                                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    <Button
-                                      onClick={() => {
-                                        // gestionCompte(email,"desactivation_compte")
-                                        setOpenModal(true);
-                                        setEmailSelected(email);
-                                        setStatutCompte(statut);
-                                      }}
-                                      color={
-                                        statut === "activé" ? "failure" : "blue"
-                                      }
-                                    >
-                                      {statut === "activé"
-                                        ? "désactiver"
-                                        : "activer"}
-                                    </Button>
-                                    <Modal
-                                      key={id}
-                                      show={openModal}
-                                      onClose={() => setOpenModal(false)}
-                                    >
-                                      <Modal.Header>Avertissement</Modal.Header>
-                                      <Modal.Body>
-                                        <div className="space-y-6">
-                                          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                            Vous êtes sur le point de désactiver
-                                            le compte de cet utilisateur.
-                                            L'utilisateur ne pourra plus se
-                                            connecter à son compte et ses accès
-                                            aux services seront immédiatement
-                                            suspendus Les données du compte
-                                            seront conservées conformément à
-                                            notre politique de rétention et un
-                                            email de notification sera
-                                            automatiquement envoyé à
-                                            l'utilisateur. Cette action peut
-                                            être annulée ultérieurement et
-                                            toutes les sessions actives de
-                                            l'utilisateur seront déconnectées
-                                          </p>
-                                        </div>
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        {statutCompte === "activé" ? (
-                                          <Button
-                                            onClick={() =>
-                                              // setOpenModal(false)
-
-                                              gestionCompte(
-                                                "desactivation_compte"
-                                              )
-                                            }
-                                            color="failure"
-                                          >
-                                            désactiver
-                                          </Button>
-                                        ) : (
-                                          <Button
-                                            onClick={() =>
-                                              gestionCompte(
-                                                "reactivation_compte"
-                                              )
-                                            }
-                                            color="blue"
-                                          >
-                                            activer
-                                          </Button>
-                                        )}
-
-                                        <Button
-                                          color="gray"
-                                          onClick={() => {
-                                            setOpenModal(false);
-                                            setEmailSelected("");
-                                            setStatutCompte("");
-                                          }}
-                                        >
-                                          Annuler
-                                        </Button>
-                                      </Modal.Footer>
-                                    </Modal>
+                                    <ButtonDecision
+                                      email={email}
+                                      statut={statut}
+                                    />
                                   </Table.Cell>
                                 </Table.Row>
                               );
@@ -429,86 +369,10 @@ const GestionUtilisateurs = () => {
                                   </Table.Cell>
 
                                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    <Button
-                                      onClick={() => {
-                                        // gestionCompte(email,"desactivation_compte")
-                                        setOpenModal(true);
-                                        setEmailSelected(email);
-                                        setStatutCompte(statut);
-                                      }}
-                                      color={
-                                        statut === "activé" ? "failure" : "blue"
-                                      }
-                                    >
-                                      {statut === "activé"
-                                        ? "désactiver"
-                                        : "activer"}
-                                    </Button>
-                                    <Modal
-                                      key={id}
-                                      show={openModal}
-                                      onClose={() => setOpenModal(false)}
-                                    >
-                                      <Modal.Header>Avertissement</Modal.Header>
-                                      <Modal.Body>
-                                        <div className="space-y-6">
-                                          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                            Vous êtes sur le point de désactiver
-                                            le compte de cet utilisateur.
-                                            L'utilisateur ne pourra plus se
-                                            connecter à son compte et ses accès
-                                            aux services seront immédiatement
-                                            suspendus Les données du compte
-                                            seront conservées conformément à
-                                            notre politique de rétention et un
-                                            email de notification sera
-                                            automatiquement envoyé à
-                                            l'utilisateur. Cette action peut
-                                            être annulée ultérieurement et
-                                            toutes les sessions actives de
-                                            l'utilisateur seront déconnectées
-                                          </p>
-                                        </div>
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        {statutCompte === "activé" ? (
-                                          <Button
-                                            onClick={() =>
-                                              // setOpenModal(false)
-
-                                              gestionCompte(
-                                                "desactivation_compte"
-                                              )
-                                            }
-                                            color="failure"
-                                          >
-                                            désactiver
-                                          </Button>
-                                        ) : (
-                                          <Button
-                                            onClick={() =>
-                                              gestionCompte(
-                                                "reactivation_compte"
-                                              )
-                                            }
-                                            color="blue"
-                                          >
-                                            activer
-                                          </Button>
-                                        )}
-
-                                        <Button
-                                          color="gray"
-                                          onClick={() => {
-                                            setOpenModal(false);
-                                            setEmailSelected("");
-                                            setStatutCompte("");
-                                          }}
-                                        >
-                                          Annuler
-                                        </Button>
-                                      </Modal.Footer>
-                                    </Modal>
+                                    <ButtonDecision
+                                      email={email}
+                                      statut={statut}
+                                    />
                                   </Table.Cell>
                                 </Table.Row>
                               );
@@ -605,86 +469,10 @@ const GestionUtilisateurs = () => {
                                   </Table.Cell>
 
                                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    <Button
-                                      onClick={() => {
-                                        // gestionCompte(email,"desactivation_compte")
-                                        setOpenModal(true);
-                                        setEmailSelected(email);
-                                        setStatutCompte(statut);
-                                      }}
-                                      color={
-                                        statut === "activé" ? "failure" : "blue"
-                                      }
-                                    >
-                                      {statut === "activé"
-                                        ? "désactiver"
-                                        : "activer"}
-                                    </Button>
-                                    <Modal
-                                      key={id}
-                                      show={openModal}
-                                      onClose={() => setOpenModal(false)}
-                                    >
-                                      <Modal.Header>Avertissement</Modal.Header>
-                                      <Modal.Body>
-                                        <div className="space-y-6">
-                                          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                            Vous êtes sur le point de désactiver
-                                            le compte de cet utilisateur.
-                                            L'utilisateur ne pourra plus se
-                                            connecter à son compte et ses accès
-                                            aux services seront immédiatement
-                                            suspendus Les données du compte
-                                            seront conservées conformément à
-                                            notre politique de rétention et un
-                                            email de notification sera
-                                            automatiquement envoyé à
-                                            l'utilisateur. Cette action peut
-                                            être annulée ultérieurement et
-                                            toutes les sessions actives de
-                                            l'utilisateur seront déconnectées
-                                          </p>
-                                        </div>
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        {statutCompte === "activé" ? (
-                                          <Button
-                                            onClick={() =>
-                                              // setOpenModal(false)
-
-                                              gestionCompte(
-                                                "desactivation_compte"
-                                              )
-                                            }
-                                            color="failure"
-                                          >
-                                            désactiver
-                                          </Button>
-                                        ) : (
-                                          <Button
-                                            onClick={() =>
-                                              gestionCompte(
-                                                "reactivation_compte"
-                                              )
-                                            }
-                                            color="blue"
-                                          >
-                                            activer
-                                          </Button>
-                                        )}
-
-                                        <Button
-                                          color="gray"
-                                          onClick={() => {
-                                            setOpenModal(false);
-                                            setEmailSelected("");
-                                            setStatutCompte("");
-                                          }}
-                                        >
-                                          Annuler
-                                        </Button>
-                                      </Modal.Footer>
-                                    </Modal>
+                                    <ButtonDecision
+                                      email={email}
+                                      statut={statut}
+                                    />
                                   </Table.Cell>
                                 </Table.Row>
                               );
@@ -786,86 +574,10 @@ const GestionUtilisateurs = () => {
                                   </Table.Cell>
 
                                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    <Button
-                                      onClick={() => {
-                                        // gestionCompte(email,"desactivation_compte")
-                                        setOpenModal(true);
-                                        setEmailSelected(email);
-                                        setStatutCompte(statut);
-                                      }}
-                                      color={
-                                        statut === "activé" ? "failure" : "blue"
-                                      }
-                                    >
-                                      {statut === "activé"
-                                        ? "désactiver"
-                                        : "activer"}
-                                    </Button>
-                                    <Modal
-                                      key={id}
-                                      show={openModal}
-                                      onClose={() => setOpenModal(false)}
-                                    >
-                                      <Modal.Header>Avertissement</Modal.Header>
-                                      <Modal.Body>
-                                        <div className="space-y-6">
-                                          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                            Vous êtes sur le point de désactiver
-                                            le compte de cet utilisateur.
-                                            L'utilisateur ne pourra plus se
-                                            connecter à son compte et ses accès
-                                            aux services seront immédiatement
-                                            suspendus Les données du compte
-                                            seront conservées conformément à
-                                            notre politique de rétention et un
-                                            email de notification sera
-                                            automatiquement envoyé à
-                                            l'utilisateur. Cette action peut
-                                            être annulée ultérieurement et
-                                            toutes les sessions actives de
-                                            l'utilisateur seront déconnectées
-                                          </p>
-                                        </div>
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        {statutCompte === "activé" ? (
-                                          <Button
-                                            onClick={() =>
-                                              // setOpenModal(false)
-
-                                              gestionCompte(
-                                                "desactivation_compte"
-                                              )
-                                            }
-                                            color="failure"
-                                          >
-                                            désactiver
-                                          </Button>
-                                        ) : (
-                                          <Button
-                                            onClick={() =>
-                                              gestionCompte(
-                                                "reactivation_compte"
-                                              )
-                                            }
-                                            color="blue"
-                                          >
-                                            activer
-                                          </Button>
-                                        )}
-
-                                        <Button
-                                          color="gray"
-                                          onClick={() => {
-                                            setOpenModal(false);
-                                            setEmailSelected("");
-                                            setStatutCompte("");
-                                          }}
-                                        >
-                                          Annuler
-                                        </Button>
-                                      </Modal.Footer>
-                                    </Modal>
+                                  <ButtonDecision
+                                      email={email}
+                                      statut={statut}
+                                    />
                                   </Table.Cell>
                                 </Table.Row>
                               );
@@ -885,6 +597,56 @@ const GestionUtilisateurs = () => {
             </div>
           </div>
         </main>
+
+        <Modal show={openModal} onClose={() => setOpenModal(false)}>
+          <Modal.Header>Avertissement</Modal.Header>
+          <Modal.Body>
+            <div className="space-y-6">
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                Vous êtes sur le point de désactiver le compte de cet
+                utilisateur. L'utilisateur ne pourra plus se connecter à son
+                compte et ses accès aux services seront immédiatement suspendus
+                Les données du compte seront conservées conformément à notre
+                politique de rétention et un email de notification sera
+                automatiquement envoyé à l'utilisateur. Cette action peut être
+                annulée ultérieurement et toutes les sessions actives de
+                l'utilisateur seront déconnectées
+              </p>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            {statutCompte === "activé" ? (
+              <Button
+                onClick={() =>
+                  // setOpenModal(false)
+
+                  gestionCompte("desactivation_compte")
+                }
+                color="failure"
+              >
+                désactiver
+              </Button>
+            ) : (
+              <Button
+                onClick={() => gestionCompte("reactivation_compte")}
+                color="blue"
+              >
+                activer
+              </Button>
+            )}
+
+            <Button
+              color="gray"
+              onClick={() => {
+                setOpenModal(false);
+                setEmailSelected("");
+                setStatutCompte("");
+              }}
+            >
+              Annuler
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
         {/* <Banner /> */}
       </div>

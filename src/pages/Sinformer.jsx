@@ -85,6 +85,44 @@ const Sinformer = () => {
       });
   };
 
+  const downloadNotice = async (email, type = "demande_inscription") => {
+    // console.log(email);
+
+    try {
+      // Configuration CORS côté Laravel nécessaire
+      const response = await axios({
+        url: "/api/produit/notice/download",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentUser.token}`,
+          // application/json;
+        },
+        responseType: "blob", // Important pour les fichiers
+        params: {
+          //       nom_fichiers: "2024_10_26_10_23_54_Lefevre_Pierre.zip",
+         id:produitSelectionne.id
+        },
+      });
+
+      
+      
+      // Créez un lien de téléchargement
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", 'notice.pdf');
+      document.body.appendChild(link);
+      link.click();
+
+      // Nettoyez
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Erreur de téléchargement", error);
+    }
+  };
+
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
@@ -286,25 +324,14 @@ const Sinformer = () => {
                       /> */}
                       <Carousel>
                         <img
-                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
+                          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcpimg.tistatic.com%2F06139253%2Fb%2F4%2F1-5-gm-Ceftriaxone-Sulbactam-For-Injection.jpg&f=1&nofb=1&ipt=1f699a0a655a2bcb9565737e5dc2c5737baaaf30f5442db2f58174ca60255694&ipo=images"
                           alt="..."
                         />
                         <img
-                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
+                          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Frawilliamsltd.com%2Fwp-content%2Fuploads%2F2021%2F07%2FSteritax-1.5.jpg&f=1&nofb=1&ipt=ac582fd6a9b14443fd81e2c7fe34fbde484db4b46d81a2a31b5b04b3161f5291&ipo=images"
                           alt="..."
                         />
-                        <img
-                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
-                          alt="..."
-                        />
-                        <img
-                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
-                          alt="..."
-                        />
-                        <img
-                          src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
-                          alt="..."
-                        />
+                        
                       </Carousel>
                     </div>
                     <div className="flex -mx-2 mb-4">
@@ -464,14 +491,11 @@ const Sinformer = () => {
                       </span> */}
                       {/* <div className="flex items-center mt-2">
                         <span className="text-gray-600 dark:text-gray-300"> */}
-                      <Link
-                        // to={"/signup"}
-                        className=""
-                      >
+                     
                         {/* Telecharger */}
                         <Button
                           color="blue"
-                          onClick={() => setOpenModal(false)}
+                          onClick={() => downloadNotice()}
                         >
                           <Download size={21} className="mr-2" />
 
@@ -479,7 +503,6 @@ const Sinformer = () => {
                             Telecharger la notice
                           </span>
                         </Button>
-                      </Link>
                       {/* </span>
                       </div> */}
                     </div>

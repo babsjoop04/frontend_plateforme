@@ -13,62 +13,41 @@ import FormProduit from "../components/FormProduit";
 
 const AjoutProduits = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [donneesProduit, setdonneesProduit] = useState({
-    nom_produit: "",
-    type_produit: "",
-    numero_AMM: "",
-    date_début: "",
-    prix_public: "",
-
-    DCI: "",
-    dosage: "",
-    conditionnement: "",
-    forme_galénique: "",
-    laboratoire: "",
-    voie_administration: "",
-    classe_thérapeutique: "",
-    files: null,
-  });
+  const [donneesProduit, setdonneesProduit] = useState({});
 
   const [errors, setErrors] = useState({});
   const [openMessageModal, setOpenMessageModal] = useState(false);
 
   const { currentUser, changeCurrentUser } = useAuthProvider();
 
-  // useEffect(() => {
-  //   console.log(donneesProduit);
-  // },[openMessageModal]);
+  useEffect(() => {
+    console.log(donneesProduit);
+  });
 
   const creerProduit = () => {
     // setOpenModal(false);
     setErrors({});
 
+    const formData = new FormData();
+
+    for (const key in donneesProduit) {
+      formData.append(key, donneesProduit[key]);
+    }
+
     axios
-      .post("/api/produit", donneesProduit, {
+      .post("/api/produit", formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${currentUser.token}`,
           // application/json;
         },
       })
       .then(function (response) {
+
+        
         // setErrors({});
-        setdonneesProduit({
-          nom_produit: "",
-          type_produit: "",
-          numero_AMM: "",
-          date_début: "",
-          prix_public: "",
-          
-          DCI: "",
-          dosage: "",
-          conditionnement: "",
-          forme_galénique: "",
-          laboratoire: "",
-          voie_administration: "",
-          classe_thérapeutique: "",
-          files: null,
-        });
+        setdonneesProduit({});
+
         setOpenMessageModal(true);
         // console.log(response);
         
@@ -84,9 +63,17 @@ const AjoutProduits = () => {
   };
 
   const change = (e) => {
-    if (e.target.name === "files") {
+    if (e.target.name === "file_img_produit") {
       setdonneesProduit((prevState) => {
-        return { ...prevState, files: e.target.files };
+        return { ...prevState, file_img_produit: e.target.files[0] };
+      });
+      // console.log(e.target.files);
+      return;
+    }
+
+    if (e.target.name === "file_notice_produit") {
+      setdonneesProduit((prevState) => {
+        return { ...prevState, file_notice_produit: e.target.files[0] };
       });
       // console.log(e.target.files);
       return;
@@ -100,6 +87,8 @@ const AjoutProduits = () => {
   const submit = () => {
     creerProduit();
   };
+
+
 
   return (
     <div className="flex h-screen overflow-hidden">

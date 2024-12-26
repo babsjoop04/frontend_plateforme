@@ -331,27 +331,53 @@ const FormProduit = ({ change, errors, defaultValues, submit }) => {
               htmlFor="files"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Photo(s) du produit
+              Photo du produit
             </label>
 
             <input
               type="file"
-              id="files"
-              name="files"
+              id="file_img_produit"
+              name="file_img_produit"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
-              // accept=".zip"
-              multiple
-              // onChange={(e) => change(e)}
+              accept=".png,.jpg,jpeg"
+              onChange={(e) => change(e)}
               // defaultValue={userData.files}
             />
-            {/* {errors.files !== "" && (
+            {errors.file_img_produit  && (
                             <div className="  my-2 text-sm font-medium  ">
                               <Alert color="failure" icon={Info}>
-                                {errors.files}
+                                {errors.file_img_produit}
                               </Alert>
                             </div>
-                          )} */}
+                          )}
+          </div>
+
+          <div className="col-span-2">
+            <label
+              htmlFor="files"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Notice du produit
+            </label>
+
+            <input
+              type="file"
+              id="file_notice_produit"
+              name="file_notice_produit"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+              accept=".pdf,.txt"
+              onChange={(e) => change(e)}
+              // defaultValue={userData.files}
+            />
+            {errors.file_notice_produit  && (
+              <div className="  my-2 text-sm font-medium  ">
+                <Alert color="failure" icon={Info}>
+                  {errors.file_notice_produit}
+                </Alert>
+              </div>
+            )}
           </div>
 
           {/* <div className=" col-span-2 mx-auto">

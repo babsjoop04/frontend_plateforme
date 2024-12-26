@@ -2,14 +2,15 @@ import Logo from "@/images/logo.jpeg";
 import {
   AtSign,
   BriefcaseBusiness,
+  CircleAlert,
   FilePen,
+  LogIn,
   MoveLeft,
   MoveRight,
   Upload,
   User,
   UserRoundCog,
 } from "lucide-react";
-
 
 import {
   Stepper,
@@ -29,13 +30,14 @@ import FormChoixType from "@/components/FormChoixType";
 import FormInfoPerso from "@/components/FormInfoPerso";
 import FormIdentifiants from "@/components/FormIdentifiants";
 import FormJustificatifs from "@/components/FormJustificatifs";
-import { Button } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
+import { Button, Modal } from "flowbite-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isLastStep, setIsLastStep] = useState(false);
   const [isFirstStep, setIsFirstStep] = useState(false);
+  const [verification, setVerification] = useState(false);
 
   // useEffect(() => {
   //   console.log(errors);
@@ -43,56 +45,34 @@ const SignUpPage = () => {
 
   const navigate = useNavigate();
 
-
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
 
   const [userData, setUserData] = useState({
-    role_utilisateur: "professionnel_san",
-    nom: "professionnel_sante",
-    prenom: "professionnel_sante",
-    sexe: "professionnel_sante",
+    role_utilisateur: "",
+    nom: "",
+    prenom: "",
+    sexe: "",
     adresse: "",
-    telephone: "professionnel_sante",
-    profession: "professionnel_sante",
-    dateNaissance: "2024/100/4",
-    email: "professionnel_santail.com",
-    password: "professionnel_sante",
-    password_confirmation: "professionnel_te",
-    specilité: "professionnel_sante",
+    telephone: "",
+    profession: "",
+    dateNaissance: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    specilité: "",
     Est_point_focal: 0,
     district_localite: "",
-    adresse_structure_travail: "professionnel_sante",
+    adresse_structure_travail: "",
     structure_travail: "",
     files: null,
   });
 
   const [traitement, setTraitement] = useState(false);
 
-  const [errors, setErros] = useState(
-    {
-      // haveErrors: false,
-      // errorMessages: {
-      role_utilisateur: "",
-      nom: "",
-      prenom: "",
-      sexe: "",
-      adresse: "",
-      telephone: "",
-      profession: "",
-      dateNaissance: "",
-      email: "",
-      password: "",
-      password_confirmation: "",
-      specilité: "",
-      Est_point_focal: 0,
-      district_localite: "",
-      adresse_structure_travail: "",
-      structure_travail: "",
-      files: "",
-    }
-    // }
-  );
+  const [openModal, setOpenModal] = useState(false);
+
+  const [errors, setErros] = useState({});
 
   const change = (e) => {
     // return "hello"
@@ -105,27 +85,10 @@ const SignUpPage = () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
+
   const submit = (e) => {
     setTraitement((value) => !value);
-    setErros({
-      role_utilisateur: "",
-      nom: "",
-      prenom: "",
-      sexe: "",
-      adresse: "",
-      telephone: "",
-      profession: "",
-      dateNaissance: "",
-      email: "",
-      password: "",
-      password_confirmation: "",
-      specilité: "",
-      Est_point_focal: 0,
-      district_localite: "",
-      adresse_structure_travail: "",
-      structure_travail: "",
-      files: "",
-    });
+    setErros({});
 
     const formData = new FormData();
 
@@ -141,49 +104,20 @@ const SignUpPage = () => {
         },
       })
       .then(function (response) {
-
         setTraitement((value) => !value);
 
         console.log(response);
 
-        setTimeout(() => {
-          navigate("/");
-        }, 2500);
+        setOpenModal(true)
+
+        // setTimeout(() => {
+        //   navigate("/login");
+        // }, 2500);
       })
       .catch(function (error) {
-        const responseErrors = error.response.data.errors;
-        let newErrorMessage = {
-          role_utilisateur: "",
-          nom: "",
-          prenom: "",
-          sexe: "",
-          adresse: "",
-          telephone: "",
-          profession: "",
-          dateNaissance: "",
-          email: "",
-          password: "",
-          password_confirmation: "",
-          specilité: "",
-          Est_point_focal: 0,
-          district_localite: "",
-          adresse_structure_travail: "",
-          structure_travail: "",
-          files: "",
-        };
-        // console.log(responseErrors);
-
-        for (const key in responseErrors) {
-          newErrorMessage = {
-            ...newErrorMessage,
-            [key]: responseErrors[key][0],
-          };
-        }
-
-        // console.log(newErrorMessage);
-        setErros({
-          ...newErrorMessage,
-        });
+        setErros(error.response.data.errors);
+        // console.log(error);
+        
         setTraitement((value) => !value);
       });
   };
@@ -197,119 +131,129 @@ const SignUpPage = () => {
             Sama pharmacovigile
           </h5>
         </div>
-
         <div className="flex flex-col  w-4/5 mx-auto  rounded-lg  dark:border   xl:p-0 bg-white dark:bg-gray-800 dark:border-gray-700">
           <div className="w-auto mx-auto my-9  ">
             <h1 className="text-xl  font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Creation de compte
             </h1>
           </div>
-          <div className="w-2/5 mx-auto mb-20  ">
+
+          <div className="w-3/5 mx-auto mb-20  ">
             {[
               "professionnel_sante",
               "PRV_exploitant",
               "responsable_organisme_reglementation",
             ].includes(userData.role_utilisateur) ? (
-              <Stepper
-                activeStep={activeStep}
-                isLastStep={(value) => setIsLastStep(value)}
-                isFirstStep={(value) => setIsFirstStep(value)}
-              >
-                <Step className="">
-                  <UserRoundCog />
+              <>
+                <Stepper
+                  activeStep={activeStep}
+                  isLastStep={(value) => setIsLastStep(value)}
+                  isFirstStep={(value) => setIsFirstStep(value)}
+                >
+                  <Step className="">
+                    <UserRoundCog />
 
-                  <div className="absolute -bottom-9 w-max text-center  ">
-                  
-                  {/* <Badge placement="top-end"> */}
-                    <Typography
-                      variant="h6"
-                      color={activeStep === 0 ? "light-blue" : "white"}
-                    >
-                      Type de compte
-                    </Typography>
-                  {/* </Badge> */}
-                  </div>
-                </Step>
-                <Step className="">
-                  <User />
-                  <div className="absolute -bottom-9 w-max text-center">
-                    <Typography
-                      variant="h6"
-                      color={activeStep === 1 ? "light-blue" : "white"}
-                    >
-                      Infos
-                    </Typography>
-                  </div>
-                </Step>
-                <Step className="">
-                  <AtSign />
-                  <div className="absolute -bottom-9 w-max text-center">
-                    <Typography
-                      variant="h6"
-                      color={activeStep === 2 ? "light-blue" : "white"}
-                    >
-                      Identifiants
-                    </Typography>
-                  </div>
-                </Step>
-                <Step>
-                  <BriefcaseBusiness />
-                  <div className="absolute -bottom-9 w-max text-center">
-                    <Typography
-                      variant="h6"
-                      color={activeStep === 3 ? "light-blue" : "white"}
-                    >
-                      Justificatif
-                    </Typography>
-                  </div>
-                </Step>
-              </Stepper>
+                    <div className="absolute -bottom-9 w-max text-center  ">
+                      {/* <Badge placement="top-end"> */}
+                      <Typography
+                        variant="h6"
+                        color={activeStep === 0 ? "light-blue" : "white"}
+                      >
+                        Type de compte
+                      </Typography>
+                      {/* </Badge> */}
+                    </div>
+                  </Step>
+                  <Step className="">
+                    <User />
+                    <div className="absolute -bottom-9 w-max text-center">
+                      <Typography
+                        variant="h6"
+                        color={activeStep === 1 ? "light-blue" : "white"}
+                      >
+                        Infos
+                      </Typography>
+                    </div>
+                  </Step>
+                  <Step className="">
+                    <AtSign />
+                    <div className="absolute -bottom-9 w-max text-center">
+                      <Typography
+                        variant="h6"
+                        color={activeStep === 2 ? "light-blue" : "white"}
+                      >
+                        Identifiants
+                      </Typography>
+                    </div>
+                  </Step>
+                  <Step>
+                    <BriefcaseBusiness />
+                    <div className="absolute -bottom-9 w-max text-center">
+                      <Typography
+                        variant="h6"
+                        color={activeStep === 3 ? "light-blue" : "white"}
+                      >
+                        Justificatif
+                      </Typography>
+                    </div>
+                  </Step>
+                </Stepper>
+              </>
             ) : (
-              <Stepper
-                activeStep={activeStep}
-                isLastStep={(value) => setIsLastStep(value)}
-                isFirstStep={(value) => setIsFirstStep(value)}
-              >
-                <Step className="">
-                  <UserRoundCog />
+              <>
+                <Stepper
+                  activeStep={activeStep}
+                  isLastStep={(value) => setIsLastStep(value)}
+                  isFirstStep={(value) => setIsFirstStep(value)}
+                >
+                  <Step className="">
+                    <UserRoundCog />
 
-                  <div className="absolute -bottom-9 w-max text-center  ">
-                    <Typography
-                      variant="h6"
-                      color={activeStep === 0 ? "light-blue" : "white"}
-                    >
-                      Type de compte
-                    </Typography>
-                  </div>
-                </Step>
-                <Step className="">
-                  <User />
-                  <div className="absolute -bottom-9 w-max text-center">
-                    <Typography
-                      variant="h6"
-                      color={activeStep === 1 ? "light-blue" : "white"}
-                    >
-                      Infos
-                    </Typography>
-                  </div>
-                </Step>
-                <Step className="">
-                  <AtSign />
-                  <div className="absolute -bottom-9 w-max text-center">
-                    <Typography
-                      variant="h6"
-                      color={activeStep === 2 ? "light-blue" : "white"}
-                    >
-                      Identifiants
-                    </Typography>
-                  </div>
-                </Step>
-              </Stepper>
+                    <div className="absolute -bottom-9 w-max text-center  ">
+                      {/* <Badge placement="top-end"> */}
+                      <Typography
+                        variant="h6"
+                        color={activeStep === 0 ? "light-blue" : "white"}
+                      >
+                        Type de compte
+                      </Typography>
+                      {/* </Badge> */}
+                    </div>
+                  </Step>
+                  <Step className="">
+                    <User />
+                    <div className="absolute -bottom-9 w-max text-center">
+                      <Typography
+                        variant="h6"
+                        color={activeStep === 1 ? "light-blue" : "white"}
+                      >
+                        Infos
+                      </Typography>
+                    </div>
+                  </Step>
+                  <Step className="">
+                    <AtSign />
+                    <div className="absolute -bottom-9 w-max text-center">
+                      <Typography
+                        variant="h6"
+                        color={activeStep === 2 ? "light-blue" : "white"}
+                      >
+                        Identifiants
+                      </Typography>
+                    </div>
+                  </Step>
+                </Stepper>
+              </>
             )}
+            {/* </Stepper> */}
           </div>
           <form className="mx-auto w-7/12" onSubmit={(e) => e.preventDefault()}>
             {activeStep === 0 ? (
-              <FormChoixType change={change}  errors={errors} />
+              <FormChoixType
+                change={change}
+                errors={errors}
+                userData={userData}
+              />
             ) : null}
 
             {activeStep === 1 ? (
@@ -373,38 +317,38 @@ const SignUpPage = () => {
           </form>
         </div>
       </section>
+      <Modal
+        show={openModal}
+        onClose={() => {
+          setOpenModal(false);
+          navigate("/login");
+        }}
+      >
+        <Modal.Header>Message</Modal.Header>
+        <Modal.Body>
+          <div className="text-center">
+            <CircleAlert className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <p className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Votre compte a été créé avec succès
+            </p>
+            <p className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              <Link
+                to={"/login"}
+                className="hover:underline decoration-indigo-600"
+              >
+                {/* <Button className="flex items-center gap-3 bg-indigo-500">
+                  <LogIn /> */}
+                Connectez vous !!
+                {/* </Button> */}
+              </Link>
+            </p>
+          </div>
+        </Modal.Body>
+
+        <Modal.Footer className="flex justify-end"></Modal.Footer>
+      </Modal>
     </>
   );
 };
 
 export default SignUpPage;
-{
-  /* <ButtonMT color="blue" onClick={submit} disabled={false}>
-  
-                Creer
-              </ButtonMT> */
-}
-
-{
-  /* <ButtonMT  onClick={handleNext} disabled={isLastStep}>
-                Suivant
-              </ButtonMT> */
-}
-
-{
-  /* 
-                
-                <Button
-                  // type="submit"
-                  color="blue"
-                  size="sm"
-                  isProcessing={traitement}
-                  // className="m-auto"
-                  // className=" flex m-auto items-center gap-1 text-white bg-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  onClick={(e) => submit(e)}
-                >
-                  {!traitement && <FilePen />}
-
-                  <span className="mx-2">Se connecter</span>
-                </Button> */
-}
